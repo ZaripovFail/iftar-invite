@@ -86,7 +86,7 @@
             color: #c5a572;
             margin-bottom: 30px;
             font-weight: 400;
-            text-transform: uppercase;
+            text-transform: none; /* Убрали капс */
         }
 
         .preloader-line {
@@ -97,7 +97,7 @@
             animation: lineExpand 2s infinite;
         }
 
-        @keylineExpand {
+        @keyframes lineExpand {
             0% { width: 0; opacity: 0; }
             50% { width: 180px; opacity: 1; }
             100% { width: 0; opacity: 0; }
@@ -481,7 +481,7 @@
                 </div>
             </div>
 
-            <!-- Времена намазов (автоматические) -->
+            <!-- Времена намазов (на сегодняшний день) -->
             <div class="prayer-section">
                 <div class="prayer-header">
                     <h2>Время намаза · Казань</h2>
@@ -648,17 +648,13 @@
             // Если время уже прошло сегодня, ставим на завтра
             if (target <= now) {
                 target.setDate(target.getDate() + 1);
-                // Если следующий - Фаджр, проверяем не перешли ли мы на завтра
-                if (next.name === "Фаджр") {
-                    // Уже корректно установлено на завтра
-                }
             }
 
             function tick() {
                 const now = new Date();
                 let diff = target - now;
 
-                // Если目标 время прошло, пересчитываем следующий намаз
+                // Если время наступило, пересчитываем следующий намаз
                 if (diff <= 0) {
                     const newNext = getNextPrayer();
                     nextPrayerName.textContent = `Следующий: ${newNext.name}`;
