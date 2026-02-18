@@ -3,7 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Приглашение на Ифтар</title>
+    <title>Приглашение на Ифтар | 14 марта 2026</title>
+    <!-- Красивые шрифты: Amiri для восточности, Inter для читаемости -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
         /* --- Стили (CSS) --- */
         * {
@@ -13,49 +17,136 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(145deg, #1e2b3a 0%, #0f1a24 100%);
+            font-family: 'Inter', sans-serif;
+            background: radial-gradient(ellipse at top, #0a1a2f 0%, #030711 100%);
             min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
             padding: 20px;
-            color: #eaeef2;
+            color: #f0f4fa;
             line-height: 1.6;
+            position: relative;
+            overflow-x: hidden;
         }
 
-        .container {
-    max-width: 800px;
+        /* --- Анимация звезд --- */
+        .stars, .twinkling {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
             width: 100%;
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border-radius: 48px;
-            padding: 40px 30px;
-            box-shadow: 0 30px 50px rgba(0, 0, 0, 0.5), 0 0 0 2px rgba(255, 215, 0, 0.1) inset;
-            border: 1px solid rgba(255, 215, 0, 0.2);
+            height: 100%;
+            display: block;
+            pointer-events: none;
+        }
+
+        .stars {
+            background: #000 url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"%3E%3Ccircle cx="10" cy="10" r="1" fill="white" /%3E%3Ccircle cx="25" cy="40" r="1.2" fill="white" /%3E%3Ccircle cx="60" cy="15" r="0.8" fill="white" /%3E%3Ccircle cx="80" cy="70" r="1.5" fill="white" /%3E%3Ccircle cx="45" cy="85" r="1" fill="white" /%3E%3Ccircle cx="90" cy="30" r="1.1" fill="white" /%3E%3Ccircle cx="15" cy="75" r="0.9" fill="white" /%3E%3Ccircle cx="70" cy="55" r="1.3" fill="white" /%3E%3C/svg%3E') repeat;
+            z-index: 0;
+        }
+
+        .twinkling {
+            background: transparent url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"%3E%3Ccircle cx="15" cy="20" r="2" fill="rgba(255,255,255,0.3)" /%3E%3Ccircle cx="70" cy="35" r="1.5" fill="rgba(255,255,255,0.4)" /%3E%3Ccircle cx="40" cy="65" r="2.2" fill="rgba(255,215,0,0.2)" /%3E%3C/svg%3E') repeat;
+            z-index: 1;
+            animation: twinkle 200s linear infinite;
+        }
+
+        @keyframes twinkle {
+            from { background-position: 0 0; }
+            to { background-position: -1000px 500px; }
+        }
+
+        /* --- Полумесяц --- */
+        .moon {
+            position: absolute;
+            top: 30px;
+            right: 40px;
+            width: 80px;
+            height: 80px;
+            filter: drop-shadow(0 0 20px #FFD700);
+            opacity: 0.8;
+            z-index: 2;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+
+        .moon::before {
+            content: "🌙";
+            font-size: 5rem;
+            line-height: 1;
+            color: #FFD700;
+            text-shadow: 0 0 30px #FFA500;
+        }
+
+        /* --- Контейнер с анимацией появления --- */
+        .container {
+            max-width: 850px;
+            width: 100%;
+            background: rgba(5, 15, 25, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-radius: 60px 60px 60px 60px;
+            padding: 45px 35px;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.7), 0 0 0 2px rgba(255, 215, 0, 0.2) inset;
+            border: 1px solid rgba(255, 200, 0, 0.3);
+            position: relative;
+            z-index: 10;
+            animation: fadeInScale 1.2s ease-out;
+        }
+
+        @keyframes fadeInScale {
+            0% {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        /* Заголовки с арабским стилем */
+        h1, h2, .arabic-touch {
+            font-family: 'Amiri', serif;
+            font-weight: 700;
         }
 
         h1 {
-            font-size: 2.5rem;
+            font-size: 3rem;
             text-align: center;
-            color: #ffd966;
+            color: #FFD700;
             margin-bottom: 10px;
-            text-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
-            font-weight: 400;
+            text-shadow: 0 0 20px rgba(255, 215, 0, 0.7);
             letter-spacing: 2px;
+            animation: glowPulse 3s infinite;
+        }
+
+        @keyframes glowPulse {
+            0% { text-shadow: 0 0 20px #FFD700; }
+            50% { text-shadow: 0 0 35px #FFA500; }
+            100% { text-shadow: 0 0 20px #FFD700; }
         }
 
         .subtitle {
             text-align: center;
-            font-size: 1.2rem;
-            margin-bottom: 40px;
-            color: #b8c7d1;
+            font-size: 1.3rem;
+            margin-bottom: 35px;
+            color: #e0eaf0;
             font-style: italic;
-            border-bottom: 1px dashed #ffd966;
+            border-bottom: 1px dashed #FFD700;
             padding-bottom: 20px;
+            font-family: 'Amiri', serif;
         }
 
+        /* Детали мероприятия */
         .details {
             display: flex;
             flex-wrap: wrap;
@@ -66,185 +157,232 @@
 
         .detail-item {
             text-align: center;
-            flex: 1 1 150px;
-            background: rgba(0, 0, 0, 0.3);
-            padding: 20px 15px;
-            border-radius: 32px;
-            border: 1px solid #ffd96666;
-            box-shadow: 0 8px 0 #0f1a24;
-            transition: transform 0.2s;
+            flex: 1 1 160px;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 22px 15px;
+            border-radius: 40px;
+            border: 1px solid #FFD70080;
+            box-shadow: 0 8px 0 #0a1a2f;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(5px);
         }
 
         .detail-item:hover {
-            transform: translateY(-5px);
+            transform: translateY(-8px);
+            border-color: #FFD700;
+            box-shadow: 0 12px 0 #0a1a2f;
         }
 
         .detail-emoji {
-            font-size: 2.5rem;
+            font-size: 2.8rem;
             display: block;
             margin-bottom: 10px;
+            filter: drop-shadow(0 0 8px gold);
         }
 
         .detail-label {
-            font-size: 0.9rem;
+            font-size: 1rem;
             text-transform: uppercase;
-            letter-spacing: 1px;
-            color: #9bb7c9;
+            letter-spacing: 1.5px;
+            color: #b0d0e5;
         }
 
         .detail-value {
-            font-size: 1.4rem;
+            font-size: 1.5rem;
             font-weight: 600;
-            color: #ffd966;
+            color: #FFD700;
+            word-break: break-word;
         }
 
+        .detail-value a {
+            color: #FFD700;
+            text-decoration: none;
+            border-bottom: 1px dotted #FFD700;
+        }
+
+        .detail-value a:hover {
+            color: #FFA500;
+        }
+
+        /* Времена намазов */
         .prayer-times {
-            background: rgba(0, 0, 0, 0.5);
-            border-radius: 48px;
-            padding: 30px 25px;
+            background: rgba(0, 0, 0, 0.6);
+            border-radius: 55px;
+            padding: 35px 25px;
             margin-bottom: 40px;
-            border: 1px solid #ffd96699;
+            border: 1px solid #FFD700;
+            box-shadow: 0 0 25px rgba(255, 215, 0, 0.2);
         }
 
         .prayer-times h2 {
             text-align: center;
-            color: #ffd966;
+            color: #FFD700;
             margin-bottom: 25px;
-            font-weight: 300;
-            font-size: 2rem;
+            font-size: 2.2rem;
         }
 
         .prayer-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-            gap: 15px;
+            grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+            gap: 18px;
         }
 
         .prayer-item {
             text-align: center;
-            padding: 15px 8px;
-            background: #1e2b3a;
-            border-radius: 32px;
+            padding: 18px 8px;
+            background: #0f2535;
+            border-radius: 40px;
             transition: all 0.2s;
             border: 1px solid transparent;
+            backdrop-filter: blur(4px);
         }
 
         .prayer-item.next-prayer {
-            border-color: #ffd966;
-            box-shadow: 0 0 20px #ffd96666;
-            background: #2a3b4b;
+            border-color: #FFD700;
+            box-shadow: 0 0 25px #FFD700;
+            background: #1a3347;
+            transform: scale(1.02);
         }
 
         .prayer-name {
-            font-size: 1.1rem;
-            font-weight: 600;
-            color: #ffd966;
-            margin-bottom: 5px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #FFD700;
+            margin-bottom: 6px;
+            font-family: 'Amiri', serif;
         }
 
         .prayer-time {
-            font-size: 1.1rem;
-            color: #eaeef2;
+            font-size: 1.2rem;
+            color: #eaf0f5;
         }
 
+        /* Обратный отсчет */
         .countdown {
             text-align: center;
-            background: #0f1a24;
-            border-radius: 60px;
-            padding: 25px;
+            background: #0a1a2f;
+            border-radius: 70px;
+            padding: 30px;
             margin-bottom: 30px;
-            border: 2px solid #ffd966;
+            border: 2px solid #FFD700;
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.3);
         }
 
         .countdown-label {
-            font-size: 1.2rem;
-            color: #b8c7d1;
-            margin-bottom: 10px;
+            font-size: 1.4rem;
+            color: #d0e2f0;
+            margin-bottom: 15px;
+            font-family: 'Amiri', serif;
         }
 
         #countdown-timer {
-            font-size: 3rem;
-            font-weight: 600;
-            color: #ffd966;
-            letter-spacing: 5px;
-            text-shadow: 0 0 20px gold;
+            font-size: 4rem;
+            font-weight: 700;
+            color: #FFD700;
+            letter-spacing: 8px;
+            text-shadow: 0 0 30px #FFA500;
+            font-family: 'Inter', monospace;
         }
 
+        /* Кнопка */
         .rsvp-button {
             text-align: center;
-            margin-top: 20px;
+            margin-top: 25px;
         }
 
         .btn {
             display: inline-block;
-            background: #ffd966;
-            color: #0f1a24;
-            font-size: 1.5rem;
-            font-weight: 600;
-            padding: 18px 60px;
-            border-radius: 50px;
+            background: #FFD700;
+            color: #0a1a2f;
+            font-size: 1.8rem;
+            font-weight: 700;
+            padding: 20px 70px;
+            border-radius: 60px;
             text-decoration: none;
-            box-shadow: 0 10px 0 #b2891e;
+            box-shadow: 0 12px 0 #b2891e;
             transition: 0.1s linear;
             border: none;
             cursor: pointer;
-            letter-spacing: 2px;
+            letter-spacing: 3px;
+            font-family: 'Amiri', serif;
         }
 
         .btn:active {
-            box-shadow: 0 3px 0 #b2891e;
-            transform: translateY(7px);
+            box-shadow: 0 4px 0 #b2891e;
+            transform: translateY(8px);
+        }
+
+        .btn:disabled {
+            opacity: 0.7;
+            cursor: default;
         }
 
         .footer-note {
             text-align: center;
-            margin-top: 35px;
-            font-size: 0.9rem;
-            color: #9bb7c9;
+            margin-top: 30px;
+            font-size: 1.1rem;
+            color: #b0d0e5;
+            min-height: 40px;
         }
 
         @media (max-width: 600px) {
             .container { padding: 30px 15px; }
-            h1 { font-size: 2rem; }
-            #countdown-timer { font-size: 2.2rem; }
-            .btn { font-size: 1.3rem; padding: 15px 40px; }
+            h1 { font-size: 2.2rem; }
+            #countdown-timer { font-size: 2.5rem; letter-spacing: 3px; }
+            .btn { font-size: 1.5rem; padding: 15px 40px; }
+            .moon { top: 10px; right: 15px; }
+            .moon::before { font-size: 3.5rem; }
         }
     </style>
 </head>
 <body>
+    <!-- Фоновые звезды -->
+    <div class="stars"></div>
+    <div class="twinkling"></div>
+    <!-- Полумесяц -->
+    <div class="moon"></div>
+
     <div class="container">
         <h1>🌙 Дорогие друзья!</h1>
-        <div class="subtitle">Приглашаю вас на праздничное разговение (Ифтар)</div>
+        <div class="subtitle">С радостью приглашаю вас на праздничное разговение (Ифтар)</div>
 
+        <!-- Детали мероприятия с твоими данными -->
         <div class="details">
             <div class="detail-item">
                 <span class="detail-emoji">📅</span>
                 <div class="detail-label">Дата</div>
-                <div class="detail-value">22 марта 2026</div>
+                <div class="detail-value">14 марта 2026</div>
             </div>
             <div class="detail-item">
                 <span class="detail-emoji">🕰️</span>
-                <div class="detail-label">Время сбора</div>
-                <div class="detail-value">18:00</div>
+                <div class="detail-label">Сбор</div>
+                <div class="detail-value">17:00</div>
+            </div>
+            <div class="detail-item">
+                <span class="detail-emoji">🍽️</span>
+                <div class="detail-label">Ифтар (Магриб)</div>
+                <div class="detail-value">17:45</div>
             </div>
             <div class="detail-item">
                 <span class="detail-emoji">📍</span>
                 <div class="detail-label">Место</div>
-                <div class="detail-value">Ресторан "Панорама"</div>
+                <div class="detail-value">
+                    <a href="https://yandex.com/maps/-/CPaQz4lR" target="_blank">ул. Рождественская, 6В, кв. 28<br>Высокая Гора</a>
+                </div>
             </div>
         </div>
 
-        <!-- Блок с временами намазов -->
+        <!-- Блок с временами намазов (ручной ввод из твоего Excel для Казани) -->
         <div class="prayer-times" id="prayer-times">
-            <h2>🕌 Время намаза (Москва)</h2>
+            <h2>🕌 Время намаза (Казань)</h2>
             <div class="prayer-grid" id="prayer-grid">
-                <!-- Сюда JavaScript вставит время -->
+                <!-- Сюда через JS вставится время -->
             </div>
         </div>
 
-        <!-- Обратный отсчет до ифтара (Магриб) -->
+        <!-- Обратный отсчет до ифтара (Магриб в 17:45) -->
         <div class="countdown">
-            <div class="countdown-label">До ифтара (время магриба) осталось:</div>
+            <div class="countdown-label">До ифтара (разговения) осталось:</div>
             <div id="countdown-timer">--:--:--</div>
         </div>
 
@@ -258,40 +396,33 @@
     <script>
         // --- JavaScript ---
 
-        // Конфигурация (данные для примера - Москва)
-        const CONFIG = {
-            latitude: 55.7558,
-            longitude: 37.6173,
-            timezone: 3, // Москва UTC+3
-            method: 16, // Метод расчета: 16 - г. Москва (ДУМ РФ)
-            // Фиксированная дата ифтара (22 марта 2026)
-            targetDate: '2026-03-22'
+        // Точные времена намазов для Казани на 14 марта 2026 (из твоего Excel)
+        // В формате: Название (ключ для определения следующего намаза) : Время
+        const PRAYER_TIMES_DATA = {
+            'Fajr': '04:12',      // Фаджр
+            'Sunrise': '06:00',    // Восход (для ориентира)
+            'Dhuhr': '12:30',      // Зухр
+            'Asr': '15:45',        // Аср
+            'Maghrib': '17:45',    // Магриб (Ифтар)
+            'Isha': '19:15'        // Иша
         };
 
-        // Функция для получения времени намазов через API Aladhan.com
-        async function fetchPrayerTimes(date) {
-            const url = `https://api.aladhan.com/v1/timings/${date}?latitude=${CONFIG.latitude}&longitude=${CONFIG.longitude}&method=${CONFIG.method}`;
+        // Названия намазов на русском для отображения
+        const PRAYER_NAMES_RU = {
+            'Fajr': 'Фаджр',
+            'Sunrise': 'Восход',
+            'Dhuhr': 'Зухр',
+            'Asr': 'Аср',
+            'Maghrib': 'Магриб (Ифтар)',
+            'Isha': 'Иша'
+        };
 
-            try {
-                const response = await fetch(url);
-                const data = await response.json();
-                if (data.code === 200) {
-                    return data.data.timings;
-                } else {
-                    throw new Error('Не удалось получить время');
-                }
-            } catch (error) {
-                console.error('Ошибка загрузки времени намазов:', error);
-                return null;
-            }
-        }
-
-        // Функция для определения следующего намаза
+        // Функция для определения следующего намаза на основе текущего времени
         function getNextPrayer(timings) {
             const now = new Date();
             const currentTime = now.getHours() * 60 + now.getMinutes(); // Текущее время в минутах
 
-            // Список намазов в порядке возрастания (для определения следующего)
+            // Порядок намазов в течение дня
             const prayerOrder = ['Fajr', 'Sunrise', 'Dhuhr', 'Asr', 'Maghrib', 'Isha'];
 
             for (let i = 0; i < prayerOrder.length; i++) {
@@ -306,34 +437,19 @@
                     return prayerName;
                 }
             }
-            // Если все намазы на сегодня прошли, следующий - Fajr (рассвет следующего дня)
+            // Если все намазы на сегодня прошли, следующий - Фаджр (утро следующего дня)
             return 'Fajr';
         }
 
-        // Функция для форматирования времени (добавление ведущего нуля)
-        function formatTime(timeString) {
-            return timeString; // API уже возвращает в формате "HH:MM"
-        }
-
-        // Функция для отображения времени намазов на странице
-        function displayPrayerTimes(timings) {
+        // Функция для отображения времени намазов
+        function displayPrayerTimes() {
             const prayerGrid = document.getElementById('prayer-grid');
-            const prayerNamesRU = {
-                'Fajr': 'Фаджр',
-                'Sunrise': 'Восход',
-                'Dhuhr': 'Зухр',
-                'Asr': 'Аср',
-                'Maghrib': 'Магриб (Ифтар)',
-                'Isha': 'Иша'
-            };
-
-            // Определяем следующий намаз
-            const nextPrayer = getNextPrayer(timings);
+            const nextPrayer = getNextPrayer(PRAYER_TIMES_DATA);
 
             prayerGrid.innerHTML = ''; // Очищаем сетку
 
-            for (const [key, time] of Object.entries(timings)) {
-                if (prayerNamesRU[key]) { // Показываем только основные намазы
+            for (const [key, time] of Object.entries(PRAYER_TIMES_DATA)) {
+                if (PRAYER_NAMES_RU[key]) {
                     const prayerItem = document.createElement('div');
                     prayerItem.className = 'prayer-item';
                     if (key === nextPrayer) {
@@ -341,44 +457,36 @@
                     }
 
                     prayerItem.innerHTML = `
-                        <div class="prayer-name">${prayerNamesRU[key]}</div>
-                        <div class="prayer-time">${formatTime(time)}</div>
+                        <div class="prayer-name">${PRAYER_NAMES_RU[key]}</div>
+                        <div class="prayer-time">${time}</div>
                     `;
                     prayerGrid.appendChild(prayerItem);
                 }
             }
         }
 
-        // Функция для обновления обратного отсчета до времени Магриба (Ифтар)
-        function updateCountdownToMaghrib(maghribTime) {
+        // Функция для обновления обратного отсчета до 17:45 (Магриб/Ифтар)
+        function updateCountdownToIftar() {
             const countdownElement = document.getElementById('countdown-timer');
-            if (!maghribTime) {
-                countdownElement.textContent = '--:--:--';
-                return;
-            }
+            const iftarTime = "17:45"; // Время ифтара из твоих данных
 
-            const now = new Date();
-            const [hours, minutes] = maghribTime.split(':').map(Number);
-
-            // Создаем объект Date для сегодняшнего Магриба
-            const maghribDate = new Date(now);
-            maghribDate.setHours(hours, minutes, 0, 0); // Устанавливаем часы и минуты
-
-            // Если время Магриба уже прошло сегодня, устанавливаем цель на завтра
-            if (now > maghribDate) {
-                maghribDate.setDate(maghribDate.getDate() + 1);
-            }
+            const [hours, minutes] = iftarTime.split(':').map(Number);
 
             function updateTimer() {
                 const now = new Date();
-                const diff = maghribDate - now; // Разница в миллисекундах
+                const target = new Date(now);
+                target.setHours(hours, minutes, 0, 0); // Устанавливаем цель на сегодня в 17:45
+
+                // Если время ифтара уже прошло сегодня, устанавливаем цель на завтра
+                if (now > target) {
+                    target.setDate(target.getDate() + 1);
+                }
+
+                const diff = target - now; // Разница в миллисекундах
 
                 if (diff <= 0) {
-                    // Если время настало, показываем "Ифтар начался!" и обновляем цель на завтра
+                    // Если вдруг время настало прямо сейчас
                     countdownElement.textContent = "Ифтар начался! 🌙";
-                    // Перенастраиваем таймер на завтрашний Магриб
-                    maghribDate.setDate(maghribDate.getDate() + 1);
-                    // Рекурсивно вызываем updateTimer снова через небольшой интервал
                     setTimeout(updateTimer, 1000);
                     return;
                 }
@@ -400,38 +508,21 @@
             const thankYouNote = document.getElementById('thankyou-note');
 
             rsvpBtn.addEventListener('click', () => {
-                thankYouNote.textContent = 'Спасибо! Очень жду тебя! 🤲';
-                thankYouNote.style.color = '#ffd966';
-                thankYouNote.style.fontSize = '1.2rem';
-                thankYouNote.style.marginTop = '15px';
-                rsvpBtn.disabled = true; // Делаем кнопку неактивной после нажатия
-                rsvpBtn.style.opacity = '0.6';
+                thankYouNote.textContent = '✨ Спасибо! Буду ждать вас с нетерпением! 🤲✨';
+                thankYouNote.style.color = '#FFD700';
+                thankYouNote.style.fontSize = '1.3rem';
+                thankYouNote.style.fontWeight = 'bold';
+                rsvpBtn.disabled = true;
+                rsvpBtn.style.opacity = '0.7';
             });
         }
 
-        // Основная функция для инициализации страницы
-        async function init() {
-            // Получаем время намазов для указанной даты
-            const timings = await fetchPrayerTimes(CONFIG.targetDate);
-
-            if (timings) {
-                displayPrayerTimes(timings);
-
-                // Запускаем обратный отсчет до Магриба (ифтар)
-                if (timings['Maghrib']) {
-                    updateCountdownToMaghrib(timings['Maghrib']);
-                }
-            } else {
-                // Если не удалось загрузить время, показываем заглушку
-                document.getElementById('prayer-grid').innerHTML = '<p style="grid-column:1/-1; text-align:center;">Не удалось загрузить время намазов. Пожалуйста, проверьте соединение.</p>';
-            }
-
-            // Настраиваем кнопку подтверждения
-            setupRSVP();
-        }
-
-        // Запускаем всё после загрузки страницы
-        window.addEventListener('DOMContentLoaded', init);
+        // Инициализация при загрузке страницы
+        window.addEventListener('DOMContentLoaded', () => {
+            displayPrayerTimes();        // Показываем времена намазов
+            updateCountdownToIftar();    // Запускаем обратный отсчет до 17:45
+            setupRSVP();                 // Настраиваем кнопку
+        });
     </script>
 </body>
 </html>
