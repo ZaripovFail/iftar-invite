@@ -14,6 +14,10 @@
             box-sizing: border-box;
         }
 
+        html {
+            scroll-behavior: smooth;
+        }
+
         body {
             font-family: 'Montserrat', sans-serif;
             font-weight: 300;
@@ -86,7 +90,7 @@
             color: #c5a572;
             margin-bottom: 30px;
             font-weight: 400;
-            text-transform: none; /* Убрали капс */
+            text-transform: none;
         }
 
         .preloader-line {
@@ -173,6 +177,28 @@
             font-weight: 600;
             text-transform: uppercase;
             letter-spacing: 0.12em;
+        }
+
+        /* Новый блок с красивым текстом */
+        .invitation-text {
+            text-align: center;
+            max-width: 700px;
+            margin: 0 auto 25px auto;
+            font-size: 1.15rem;
+            line-height: 1.8;
+            color: #d4c9bc;
+            font-weight: 300;
+            letter-spacing: 0.02em;
+            padding: 0 15px;
+        }
+
+        .invitation-text p {
+            margin-bottom: 10px;
+        }
+
+        .invitation-text .highlight {
+            color: #c5a572;
+            font-weight: 400;
         }
 
         .subtitle {
@@ -439,6 +465,7 @@
             }
             h1 { font-size: 2.4rem; }
             .container { padding: 35px 25px; }
+            .invitation-text { font-size: 1rem; }
         }
 
         @media (max-width: 500px) {
@@ -464,6 +491,13 @@
             <div class="ornament-top"></div>
             
             <h1>Дорогие друзья</h1>
+            
+            <!-- Новый блок с красивым текстом -->
+            <div class="invitation-text">
+                <p>С огромной радостью приглашаем вас на <span class="highlight">традиционный семейный ифтар</span> — вечер разговения, наполненный теплом, светом и душевным общением.</p>
+                <p>Для нас большая честь разделить с вами этот благословенный час, собраться за одним столом в кругу близких и дорогих сердцу людей.</p>
+            </div>
+            
             <div class="subtitle">Приглашение на праздничный ифтар</div>
 
             <!-- Верхние карточки -->
@@ -577,6 +611,8 @@
             setTimeout(() => {
                 preloader.classList.add('hidden');
                 mainContent.classList.add('visible');
+                // Прокрутка в начало страницы после загрузки
+                window.scrollTo(0, 0);
             }, 2500);
         });
 
