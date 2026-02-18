@@ -95,7 +95,7 @@
 
         @keyframes glowPulse {
             0% { text-shadow: 0 0 20px #FFD700; }
-            50% { text-shadow:  ‌0 0 50px #FFA500; }
+            50% { text-shadow: 0 0 50px #FFA500; }
             100% { text-shadow: 0 0 20px #FFD700; }
         }
 
@@ -104,7 +104,7 @@
             opacity: 0;
             transition: opacity 1.5s ease;
             width: 100%;
-            max-width: 950px;
+            max-width: 1000px;
             position: relative;
             z-index: 10;
         }
@@ -263,7 +263,7 @@
             margin: 10px 0;
         }
 
-        /* Времена намазов */
+        /* Времена намазов с выбором даты */
         .prayer-times {
             background: rgba(0, 0, 0, 0.6);
             border-radius: 55px;
@@ -273,11 +273,35 @@
             box-shadow: 0 0 25px rgba(255, 215, 0, 0.2);
         }
 
-        .prayer-times h2 {
-            text-align: center;
-            color: #FFD700;
+        .prayer-header {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
             margin-bottom: 25px;
-            font-size: 2.2rem;
+            gap: 15px;
+        }
+
+        .prayer-header h2 {
+            color: #FFD700;
+            font-size: 2rem;
+            margin: 0;
+        }
+
+        .date-selector {
+            background: #0f2535;
+            padding: 10px 15px;
+            border-radius: 50px;
+            border: 1px solid #FFD700;
+            color: #FFD700;
+            font-family: 'Amiri', serif;
+            font-size: 1.1rem;
+            cursor: pointer;
+        }
+
+        .date-selector option {
+            background: #0f2535;
+            color: #f0f4fa;
         }
 
         .prayer-grid {
@@ -399,6 +423,10 @@
             h1 { font-size: 2.2rem; }
             .preloader-moon { font-size: 5rem; }
             .preloader-text { font-size: 1.8rem; }
+            .prayer-header {
+                flex-direction: column;
+                align-items: stretch;
+            }
         }
     </style>
 </head>
@@ -423,26 +451,29 @@
             <h1>🌙 Дорогие друзья!</h1>
             <div class="subtitle">С радостью приглашаю вас на праздничный Ифтар</div>
 
-            <!-- Верхние карточки: Дата+сбор и Время ифтара -->
+            <!-- Верхние карточки -->
             <div class="top-cards">
-                <!-- Карточка даты и сбора -->
                 <div class="card">
                     <div class="card-title">📅 Дата и сбор</div>
                     <div class="date-value">14 марта 2026 / 17:00</div>
                     <button class="calendar-btn" id="addToCalendarBtn">➕ Добавить в календарь</button>
                     <div class="calendar-note">* нажмите, чтобы не забыть</div>
                 </div>
-                <!-- Карточка времени ифтара -->
                 <div class="card">
                     <div class="card-title">🍽️ Время ифтара (Магриб)</div>
                     <div class="iftar-time">17:45</div>
-                    <div style="color: #b0d0e5;">после вечернего азана</div>
+                    <div style="color: #b0d0e5;">14 марта 2026</div>
                 </div>
             </div>
 
-            <!-- Времена намазов (из твоего файла) -->
+            <!-- Времена намазов с выбором даты -->
             <div class="prayer-times">
-                <h2>🕌 Время намаза (Казань, 14 марта 2026)</h2>
+                <div class="prayer-header">
+                    <h2>🕌 Время намаза (Казань)</h2>
+                    <select class="date-selector" id="dateSelector">
+                        <!-- Даты подставятся из JavaScript -->
+                    </select>
+                </div>
                 <div class="prayer-grid" id="prayerGrid">
                     <!-- Заполняется через JS -->
                 </div>
@@ -471,22 +502,53 @@
     </div>
 
     <script>
-        // --- ДАННЫЕ ИЗ ТВОЕГО ФАЙЛА (для 14 марта 2026) ---
-        const PRAYER_TIMES = {
-            'Фаджр': '03:57',
-            'Восход': '06:02',
-            'Зухр': '12:00',
-            'Аср': '15:44',
-            'Магриб': '17:45',   // Ифтар
-            'Иша': '19:28'
-        };
+        // --- ДАННЫЕ ИЗ ТВОЕГО ФАЙЛА (все даты с 19.02.2026 по 19.03.2026) ---
+        const PRAYER_DATA = [
+            { date: "19.02.2026", fajr: "04:55", sunrise: "07:00", dhuhr: "12:00", asr: "15:02", maghrib: "16:57", isha: "18:39" },
+            { date: "20.02.2026", fajr: "04:53", sunrise: "06:57", dhuhr: "12:00", asr: "15:04", maghrib: "16:59", isha: "18:41" },
+            { date: "21.02.2026", fajr: "04:51", sunrise: "06:55", dhuhr: "12:00", asr: "15:06", maghrib: "17:01", isha: "18:43" },
+            { date: "22.02.2026", fajr: "04:48", sunrise: "06:53", dhuhr: "12:00", asr: "15:08", maghrib: "17:03", isha: "18:45" },
+            { date: "23.02.2026", fajr: "04:46", sunrise: "06:50", dhuhr: "12:00", asr: "15:10", maghrib: "17:05", isha: "18:47" },
+            { date: "24.02.2026", fajr: "04:44", sunrise: "06:48", dhuhr: "12:00", asr: "15:12", maghrib: "17:08", isha: "18:49" },
+            { date: "25.02.2026", fajr: "04:41", sunrise: "06:45", dhuhr: "12:00", asr: "15:13", maghrib: "17:10", isha: "18:51" },
+            { date: "26.02.2026", fajr: "04:39", sunrise: "06:43", dhuhr: "12:00", asr: "15:15", maghrib: "17:12", isha: "18:53" },
+            { date: "27.02.2026", fajr: "04:37", sunrise: "06:40", dhuhr: "12:00", asr: "15:17", maghrib: "17:14", isha: "18:55" },
+            { date: "28.02.2026", fajr: "04:34", sunrise: "06:38", dhuhr: "12:00", asr: "15:19", maghrib: "17:16", isha: "18:58" },
+            { date: "01.03.2026", fajr: "04:32", sunrise: "06:35", dhuhr: "12:00", asr: "15:21", maghrib: "17:18", isha: "19:00" },
+            { date: "02.03.2026", fajr: "04:29", sunrise: "06:33", dhuhr: "12:00", asr: "15:23", maghrib: "17:20", isha: "19:02" },
+            { date: "03.03.2026", fajr: "04:27", sunrise: "06:30", dhuhr: "12:00", asr: "15:25", maghrib: "17:22", isha: "19:04" },
+            { date: "04.03.2026", fajr: "04:24", sunrise: "06:28", dhuhr: "12:00", asr: "15:26", maghrib: "17:25", isha: "19:06" },
+            { date: "05.03.2026", fajr: "04:21", sunrise: "06:25", dhuhr: "12:00", asr: "15:28", maghrib: "17:27", isha: "19:08" },
+            { date: "06.03.2026", fajr: "04:19", sunrise: "06:23", dhuhr: "12:00", asr: "15:30", maghrib: "17:29", isha: "19:10" },
+            { date: "07.03.2026", fajr: "04:16", sunrise: "06:20", dhuhr: "12:00", asr: "15:32", maghrib: "17:31", isha: "19:12" },
+            { date: "08.03.2026", fajr: "04:13", sunrise: "06:18", dhuhr: "12:00", asr: "15:33", maghrib: "17:33", isha: "19:14" },
+            { date: "09.03.2026", fajr: "04:11", sunrise: "06:15", dhuhr: "12:00", asr: "15:35", maghrib: "17:35", isha: "19:17" },
+            { date: "10.03.2026", fajr: "04:08", sunrise: "06:13", dhuhr: "12:00", asr: "15:37", maghrib: "17:37", isha: "19:19" },
+            { date: "11.03.2026", fajr: "04:05", sunrise: "06:10", dhuhr: "12:00", asr: "15:39", maghrib: "17:39", isha: "19:21" },
+            { date: "12.03.2026", fajr: "04:02", sunrise: "06:07", dhuhr: "12:00", asr: "15:40", maghrib: "17:41", isha: "19:23" },
+            { date: "13.03.2026", fajr: "04:00", sunrise: "06:05", dhuhr: "12:00", asr: "15:42", maghrib: "17:43", isha: "19:25" },
+            { date: "14.03.2026", fajr: "03:57", sunrise: "06:02", dhuhr: "12:00", asr: "15:44", maghrib: "17:45", isha: "19:28" },
+            { date: "15.03.2026", fajr: "03:54", sunrise: "06:00", dhuhr: "12:00", asr: "15:46", maghrib: "17:47", isha: "19:30" },
+            { date: "16.03.2026", fajr: "03:51", sunrise: "05:57", dhuhr: "12:00", asr: "15:47", maghrib: "17:49", isha: "19:32" },
+            { date: "17.03.2026", fajr: "03:48", sunrise: "05:54", dhuhr: "12:00", asr: "15:49", maghrib: "17:51", isha: "19:34" },
+            { date: "18.03.2026", fajr: "03:45", sunrise: "05:52", dhuhr: "12:00", asr: "15:51", maghrib: "17:53", isha: "19:37" },
+            { date: "19.03.2026", fajr: "03:42", sunrise: "05:49", dhuhr: "12:00", asr: "15:52", maghrib: "17:55", isha: "19:39" }
+        ];
 
-        // Соответствие для определения следующего намаза
-        const PRAYER_ORDER = ['Фаджр', 'Восход', 'Зухр', 'Аср', 'Магриб', 'Иша'];
+        // Порядок намазов для отображения
+        const PRAYER_KEYS = [
+            { name: "Фаджр", key: "fajr" },
+            { name: "Восход", key: "sunrise" },
+            { name: "Зухр", key: "dhuhr" },
+            { name: "Аср", key: "asr" },
+            { name: "Магриб", key: "maghrib" },
+            { name: "Иша", key: "isha" }
+        ];
 
-        // --- ЭЛЕМЕНТЫ ---
+        // Элементы
         const preloader = document.getElementById('preloader');
         const mainContent = document.getElementById('mainContent');
+        const dateSelector = document.getElementById('dateSelector');
         const prayerGrid = document.getElementById('prayerGrid');
         const nextPrayerTimer = document.getElementById('nextPrayerTimer');
         const nextPrayerName = document.getElementById('nextPrayerName');
@@ -500,45 +562,82 @@
             setTimeout(() => {
                 preloader.classList.add('hidden');
                 mainContent.classList.add('visible');
-            }, 2500); // Прелоудер висит 2.5 секунды
+            }, 2500);
         });
 
-        // --- 2. ОТОБРАЖЕНИЕ ВРЕМЕН НАМАЗОВ ---
-        function displayPrayerTimes() {
+        // --- 2. ЗАПОЛНЕНИЕ СЕЛЕКТОРА ДАТ ---
+        function populateDateSelector() {
+            PRAYER_DATA.forEach(item => {
+                const option = document.createElement('option');
+                option.value = item.date;
+                option.textContent = item.date;
+                if (item.date === "14.03.2026") {
+                    option.selected = true;
+                }
+                dateSelector.appendChild(option);
+            });
+        }
+        populateDateSelector();
+
+        // --- 3. ОТОБРАЖЕНИЕ НАМАЗОВ ДЛЯ ВЫБРАННОЙ ДАТЫ ---
+        function displayPrayerForDate(dateStr) {
+            const data = PRAYER_DATA.find(item => item.date === dateStr);
+            if (!data) return;
+
             prayerGrid.innerHTML = '';
-            for (let [name, time] of Object.entries(PRAYER_TIMES)) {
+            PRAYER_KEYS.forEach(p => {
                 const item = document.createElement('div');
                 item.className = 'prayer-item';
                 item.innerHTML = `
-                    <div class="prayer-name">${name}</div>
-                    <div class="prayer-time">${time}</div>
+                    <div class="prayer-name">${p.name}</div>
+                    <div class="prayer-time">${data[p.key]}</div>
                 `;
                 prayerGrid.appendChild(item);
-            }
+            });
         }
-        displayPrayerTimes();
 
-        // --- 3. ОПРЕДЕЛЕНИЕ СЛЕДУЮЩЕГО НАМАЗА ---
-        function getNextPrayer() {
+        // Показываем для 14 марта по умолчанию
+        displayPrayerForDate("14.03.2026");
+
+        // Смена даты
+        dateSelector.addEventListener('change', (e) => {
+            displayPrayerForDate(e.target.value);
+        });
+
+        // --- 4. ОПРЕДЕЛЕНИЕ СЛЕДУЮЩЕГО НАМАЗА (на основе сегодняшней даты) ---
+        function getTodayData() {
+            const today = new Date();
+            const day = String(today.getDate()).padStart(2, '0');
+            const month = String(today.getMonth() + 1).padStart(2, '0');
+            const year = today.getFullYear();
+            const todayStr = `${day}.${month}.${year}`;
+            
+            // Ищем в данных, если нет - возвращаем 14 марта (ближайшее)
+            const found = PRAYER_DATA.find(item => item.date === todayStr);
+            return found || PRAYER_DATA.find(item => item.date === "14.03.2026");
+        }
+
+        function getNextPrayerFromData(data) {
             const now = new Date();
-            const currentHours = now.getHours();
-            const currentMinutes = now.getMinutes();
-            const currentTotal = currentHours * 60 + currentMinutes;
+            const currentTotal = now.getHours() * 60 + now.getMinutes();
 
-            for (let prayer of PRAYER_ORDER) {
-                const [hours, minutes] = PRAYER_TIMES[prayer].split(':').map(Number);
+            for (let p of PRAYER_KEYS) {
+                const [hours, minutes] = data[p.key].split(':').map(Number);
                 const prayerTotal = hours * 60 + minutes;
                 if (prayerTotal > currentTotal) {
-                    return { name: prayer, time: PRAYER_TIMES[prayer] };
+                    return { name: p.name, time: data[p.key] };
                 }
             }
-            // Если все намазы прошли, следующий - Фаджр (завтра)
-            return { name: 'Фаджр (завтра)', time: PRAYER_TIMES['Фаджр'] };
+            // Если все прошли - первый назавтра (Фаджр)
+            return { name: "Фаджр (завтра)", time: data.fajr };
         }
 
-        // --- 4. ОБНОВЛЕНИЕ ТАЙМЕРА ДО СЛЕДУЮЩЕГО НАМАЗА ---
+        // --- 5. ТАЙМЕР ДО СЛЕДУЮЩЕГО НАМАЗА ---
         function updateNextPrayerTimer() {
-            const next = getNextPrayer();
+            const todayData = getTodayData();
+            if (!todayData) return;
+
+            let next = getNextPrayerFromData(todayData);
             nextPrayerName.textContent = `Следующий: ${next.name}`;
 
             const now = new Date();
@@ -546,7 +645,6 @@
             const target = new Date(now);
             target.setHours(hours, minutes, 0, 0);
 
-            // Если время уже прошло сегодня, ставим на завтра (для Фаджра)
             if (target <= now) {
                 target.setDate(target.getDate() + 1);
             }
@@ -556,8 +654,7 @@
                 const diff = target - now;
 
                 if (diff <= 0) {
-                    // Если наступило, переопределяем следующий намаз
-                    const newNext = getNextPrayer();
+                    const newNext = getNextPrayerFromData(todayData);
                     nextPrayerName.textContent = `Следующий: ${newNext.name}`;
                     const [h, m] = newNext.time.split(':').map(Number);
                     target.setHours(h, m, 0, 0);
@@ -575,9 +672,9 @@
             setInterval(tick, 1000);
         }
 
-        // --- 5. ТАЙМЕР ДО ИФТАРА (14 МАРТА 2026 17:45) ---
+        // --- 6. ТАЙМЕР ДО ИФТАРА (14 МАРТА 2026 17:45) ---
         function updateIftarCountdown() {
-            const targetDate = new Date(2026, 2, 14, 17, 45, 0); // Месяцы: 2 = март
+            const targetDate = new Date(2026, 2, 14, 17, 45, 0);
 
             function tick() {
                 const now = new Date();
@@ -604,21 +701,13 @@
             setInterval(tick, 1000);
         }
 
-        // --- 6. КНОПКА "ДОБАВИТЬ В КАЛЕНДАРЬ" ---
+        // --- 7. КНОПКА КАЛЕНДАРЯ ---
         addToCalendarBtn.addEventListener('click', () => {
-            const event = {
-                title: 'Ифтар у друзей',
-                description: 'Приглашение на праздничный ифтар',
-                location: 'Высокая Гора, ул. Рождественская, 6В, кв.28',
-                start: '20260314T170000',
-                end: '20260314T193000'
-            };
-            // Google Calendar ссылка
-            const googleUrl = `https://www.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(event.title)}&details=${encodeURIComponent(event.description)}&location=${encodeURIComponent(event.location)}&dates=${event.start}/${event.end}`;
+            const googleUrl = `https://www.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent('Ифтар у друзей')}&details=${encodeURIComponent('Приглашение на праздничный ифтар')}&location=${encodeURIComponent('Высокая Гора, ул. Рождественская, 6В, кв.28')}&dates=20260314T170000/20260314T193000`;
             window.open(googleUrl, '_blank');
         });
 
-        // --- 7. КНОПКА "Я ПРИДУ!" ---
+        // --- 8. КНОПКА ПОДТВЕРЖДЕНИЯ ---
         rsvpBtn.addEventListener('click', () => {
             thankyouNote.textContent = '✨ Спасибо! Очень жду вас! 🤲✨';
             thankyouNote.style.color = '#FFD700';
@@ -630,21 +719,6 @@
         // --- ЗАПУСК ---
         updateNextPrayerTimer();
         updateIftarCountdown();
-
-        // Подсветка следующего намаза (обновляем каждую минуту)
-        function highlightNextPrayer() {
-            const next = getNextPrayer().name;
-            document.querySelectorAll('.prayer-item').forEach(item => {
-                const name = item.querySelector('.prayer-name').textContent;
-                if (name === next || (next.includes('Фаджр') && name === 'Фаджр')) {
-                    item.classList.add('next-prayer');
-                } else {
-                    item.classList.remove('next-prayer');
-                }
-            });
-        }
-        highlightNextPrayer();
-        setInterval(highlightNextPrayer, 60000);
     </script>
 </body>
 </html>
