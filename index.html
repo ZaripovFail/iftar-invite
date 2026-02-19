@@ -49,14 +49,14 @@
             z-index: 0;
         }
 
-        /* Прелоудер с анимацией заката */
+        /* Прелоудер */
         .preloader {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(180deg, #0b1a2a 0%, #1a2c3a 50%, #2b3e4a 100%);
+            background: linear-gradient(180deg, #0a1a2a 0%, #1f3848 70%, #2c4a5a 100%);
             display: flex;
             justify-content: center;
             align-items: center;
@@ -70,77 +70,143 @@
             visibility: hidden;
         }
 
-        .preloader-sun {
+        /* Контейнер для небесных тел */
+        .celestial-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Солнце (заходит справа налево по дуге) */
+        .sun {
             position: absolute;
-            bottom: -100px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 150px;
-            height: 150px;
-            background: radial-gradient(circle at 30% 30%, #ffaa33, #ff6b35);
+            width: 120px;
+            height: 120px;
+            background: radial-gradient(circle at 30% 30%, #ffdb7c, #ff9f4b);
             border-radius: 50%;
-            box-shadow: 0 0 100px #ff8c42;
-            animation: sunset 2.5s ease-out forwards;
+            box-shadow: 0 0 100px #ffb347;
+            left: 120%;
+            top: 60%;
+            transform: translate(-50%, -50%);
+            animation: sunsetArc 2.8s ease-in-out forwards;
             z-index: 1;
         }
 
-        @keyframes sunset {
-            0% { bottom: -100px; opacity: 0; }
-            20% { bottom: 20%; opacity: 1; }
-            80% { bottom: 20%; opacity: 0.8; }
-            100% { bottom: 120%; opacity: 0; }
+        @keyframes sunsetArc {
+            0% {
+                left: 120%;
+                top: 60%;
+                opacity: 1;
+                transform: translate(-50%, -50%) scale(1);
+            }
+            40% {
+                left: 70%;
+                top: 45%;
+                opacity: 1;
+                transform: translate(-50%, -50%) scale(1);
+            }
+            70% {
+                left: 40%;
+                top: 55%;
+                opacity: 0.8;
+                transform: translate(-50%, -50%) scale(0.9);
+            }
+            100% {
+                left: -20%;
+                top: 80%;
+                opacity: 0;
+                transform: translate(-50%, -50%) scale(0.5);
+            }
         }
 
-        .preloader-moon-container {
+        /* Луна (убывающая, 23% освещенности - 25 лунный день) */
+        .moon-container {
             position: absolute;
-            top: -150px;
-            left: 50%;
-            transform: translateX(-50%);
-            animation: moonrise 2.5s ease-out forwards;
+            left: -20%;
+            top: 30%;
+            transform: translate(-50%, -50%);
+            animation: moonriseArc 3.2s ease-in-out forwards;
             z-index: 2;
+            opacity: 0;
         }
 
-        @keyframes moonrise {
-            0% { top: -150px; opacity: 0; }
-            40% { top: -150px; opacity: 0; }
-            60% { top: 30%; opacity: 1; }
-            100% { top: 30%; opacity: 1; }
+        @keyframes moonriseArc {
+            0% {
+                left: -20%;
+                top: 30%;
+                opacity: 0;
+            }
+            50% {
+                left: -20%;
+                top: 30%;
+                opacity: 0;
+            }
+            75% {
+                left: 40%;
+                top: 25%;
+                opacity: 1;
+            }
+            100% {
+                left: 50%;
+                top: 25%;
+                opacity: 1;
+            }
         }
 
-        .preloader-moon {
-            font-size: 6rem;
-            color: #fff9e6;
-            filter: drop-shadow(0 0 30px #ffd966);
-            text-shadow: 0 0 20px #f0e68c;
-        }
-
-        .preloader-content {
+        .moon {
             position: relative;
-            z-index: 3;
+            width: 90px;
+            height: 90px;
+            background: transparent;
+            border-radius: 50%;
+            box-shadow: 25px 0 0 0 #fff9e6;
+            transform: rotate(25deg);
+            filter: drop-shadow(0 0 30px #fff9e6);
+        }
+
+        /* Тонкая настройка для фазы 23% */
+        .moon::before {
+            content: '';
+            position: absolute;
+            width: 90px;
+            height: 90px;
+            background: #1f3848;
+            border-radius: 50%;
+            left: -5px;
+            top: 0;
+        }
+
+        /* Контейнер для текста */
+        .preloader-text-content {
+            position: relative;
+            z-index: 10;
             text-align: center;
             color: #fff9e6;
-            text-shadow: 0 0 20px rgba(0,0,0,0.5);
+            text-shadow: 0 0 30px rgba(0,0,0,0.7);
+            margin-top: 150px;
         }
 
         .preloader-title {
             font-family: 'Cormorant Garamond', serif;
-            font-size: 2rem;
+            font-size: 2.2rem;
             letter-spacing: 0.3em;
-            margin-bottom: 30px;
+            margin-bottom: 20px;
             font-weight: 400;
             text-transform: uppercase;
             opacity: 0;
-            animation: fadeInUp 1s 1.2s forwards;
+            animation: fadeInUp 1s 3s forwards;
         }
 
         .preloader-date {
             font-family: 'Cormorant Garamond', serif;
-            font-size: 1.8rem;
+            font-size: 2rem;
             letter-spacing: 0.15em;
-            margin-top: 40px;
             font-weight: 300;
             opacity: 0;
-            animation: fadeInUp 1s 1.4s forwards;
+            animation: fadeInUp 1s 3.2s forwards;
         }
 
         @keyframes fadeInUp {
@@ -210,7 +276,6 @@
             letter-spacing: 0.12em;
         }
 
-        /* Блок с красивым текстом */
         .invitation-text {
             text-align: center;
             max-width: 700px;
@@ -232,7 +297,6 @@
             font-weight: 400;
         }
 
-        /* Премиальные карточки */
         .top-cards {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -307,7 +371,6 @@
             text-align: center;
         }
 
-        /* Времена намазов */
         .prayer-section {
             margin-bottom: 40px;
             border-top: 1px solid rgba(197, 165, 114, 0.2);
@@ -378,7 +441,6 @@
             font-weight: 500;
         }
 
-        /* Двойной отсчет */
         .countdown-container {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -418,7 +480,6 @@
             letter-spacing: 0.05em;
         }
 
-        /* Хадис вместо кнопки */
         .hadith-section {
             text-align: center;
             margin: 30px 0 10px;
@@ -451,7 +512,6 @@
             letter-spacing: 0.05em;
         }
 
-        /* Адаптивность */
         @media (max-width: 800px) {
             .prayer-grid {
                 grid-template-columns: repeat(3, 1fr);
@@ -465,25 +525,35 @@
             h1 { font-size: 2.4rem; }
             .container { padding: 35px 25px; }
             .invitation-text { font-size: 1rem; }
-            .preloader-title { font-size: 1.5rem; }
-            .preloader-date { font-size: 1.3rem; }
+            .preloader-title { font-size: 1.8rem; }
+            .preloader-date { font-size: 1.6rem; }
         }
 
         @media (max-width: 500px) {
             .prayer-grid {
                 grid-template-columns: repeat(2, 1fr);
             }
+            .sun { width: 80px; height: 80px; }
+            .moon { width: 60px; height: 60px; }
+            .moon::before { width: 60px; height: 60px; }
         }
     </style>
 </head>
 <body>
-    <!-- Прелоудер с закатом -->
+    <!-- Прелоудер с закатом и восходом луны -->
     <div class="preloader" id="preloader">
-        <div class="preloader-sun"></div>
-        <div class="preloader-moon-container">
-            <div class="preloader-moon">☾</div>
+        <div class="celestial-container">
+            <!-- Солнце заходит справа налево по дуге -->
+            <div class="sun"></div>
+            
+            <!-- Луна появляется после захода солнца (убывающая, 23%) -->
+            <div class="moon-container">
+                <div class="moon"></div>
+            </div>
         </div>
-        <div class="preloader-content">
+        
+        <!-- Текст появляется только после луны -->
+        <div class="preloader-text-content">
             <div class="preloader-title">Приглашение на ифтар</div>
             <div class="preloader-date">14 марта 2026</div>
         </div>
@@ -496,13 +566,11 @@
             
             <h1>Дорогие друзья</h1>
             
-            <!-- Вступительный текст -->
             <div class="invitation-text">
                 <p>С огромной радостью приглашаем вас на <span class="highlight">традиционный семейный ифтар</span> — вечер разговения, наполненный теплом, светом и душевным общением.</p>
                 <p>Для нас большая честь разделить с вами этот благословенный час, собраться за одним столом в кругу близких и дорогих сердцу людей.</p>
             </div>
 
-            <!-- Верхние карточки -->
             <div class="top-cards">
                 <div class="card">
                     <div class="card-title">Дата и сбор</div>
@@ -517,18 +585,14 @@
                 </div>
             </div>
 
-            <!-- Времена намазов -->
             <div class="prayer-section">
                 <div class="prayer-header">
                     <h2>Время намаза · Казань</h2>
                     <div class="date-indicator" id="currentDateDisplay">14 марта 2026</div>
                 </div>
-                <div class="prayer-grid" id="prayerGrid">
-                    <!-- Заполняется через JS -->
-                </div>
+                <div class="prayer-grid" id="prayerGrid"></div>
             </div>
 
-            <!-- Двойной отсчет -->
             <div class="countdown-container">
                 <div class="countdown-box">
                     <div class="countdown-label">До ближайшего намаза</div>
@@ -542,7 +606,6 @@
                 </div>
             </div>
 
-            <!-- Хадис вместо кнопки -->
             <div class="hadith-section">
                 <div class="hadith-text">«Тот, кто накормит постящегося во время ифтара, получит такую же награду, как и постящийся, без уменьшения награды последнего»</div>
                 <div class="hadith-author">(хадис от Ат-Тирмизи)</div>
@@ -553,7 +616,6 @@
     </div>
 
     <script>
-        // --- ДАННЫЕ ИЗ ТВОЕГО ФАЙЛА ---
         const PRAYER_DATA = [
             { date: "19.02.2026", fajr: "04:55", sunrise: "07:00", dhuhr: "12:00", asr: "15:02", maghrib: "16:57", isha: "18:39" },
             { date: "20.02.2026", fajr: "04:53", sunrise: "06:57", dhuhr: "12:00", asr: "15:04", maghrib: "16:59", isha: "18:41" },
@@ -586,7 +648,6 @@
             { date: "19.03.2026", fajr: "03:42", sunrise: "05:49", dhuhr: "12:00", asr: "15:52", maghrib: "17:55", isha: "19:39" }
         ];
 
-        // Порядок намазов
         const PRAYER_KEYS = [
             { name: "Фаджр", key: "fajr" },
             { name: "Восход", key: "sunrise" },
@@ -596,7 +657,6 @@
             { name: "Иша", key: "isha" }
         ];
 
-        // Элементы
         const preloader = document.getElementById('preloader');
         const mainContent = document.getElementById('mainContent');
         const prayerGrid = document.getElementById('prayerGrid');
@@ -606,16 +666,14 @@
         const iftarCountdown = document.getElementById('iftarCountdown');
         const addToCalendarBtn = document.getElementById('addToCalendarBtn');
 
-        // --- 1. СТАРТОВАЯ АНИМАЦИЯ ---
         window.addEventListener('load', () => {
             setTimeout(() => {
                 preloader.classList.add('hidden');
                 mainContent.classList.add('visible');
                 window.scrollTo(0, 0);
-            }, 3000);
+            }, 4500);
         });
 
-        // --- 2. ПОЛУЧЕНИЕ ДАННЫХ ДЛЯ СЕГОДНЯШНЕЙ ДАТЫ ---
         function getTodayData() {
             const today = new Date();
             const day = String(today.getDate()).padStart(2, '0');
@@ -627,7 +685,6 @@
             return found || PRAYER_DATA.find(item => item.date === "14.03.2026");
         }
 
-        // --- 3. ОТОБРАЖЕНИЕ НАМАЗОВ ---
         function displayTodayPrayers() {
             const data = getTodayData();
             if (!data) return;
@@ -649,7 +706,6 @@
         }
         displayTodayPrayers();
 
-        // --- 4. ОПРЕДЕЛЕНИЕ СЛЕДУЮЩЕГО НАМАЗА ---
         function getNextPrayer() {
             const data = getTodayData();
             if (!data) return { name: "Фаджр", time: "04:00" };
@@ -667,7 +723,6 @@
             return { name: "Фаджр", time: data.fajr };
         }
 
-        // --- 5. ТАЙМЕР ДО СЛЕДУЮЩЕГО НАМАЗА ---
         function updateNextPrayerTimer() {
             let next = getNextPrayer();
             nextPrayerName.textContent = `Следующий: ${next.name}`;
@@ -705,7 +760,6 @@
             setInterval(tick, 1000);
         }
 
-        // --- 6. ТАЙМЕР ДО ИФТАРА ---
         function updateIftarCountdown() {
             const targetDate = new Date(2026, 2, 14, 17, 45, 0);
 
@@ -734,7 +788,6 @@
             setInterval(tick, 1000);
         }
 
-        // --- 7. ПОДСВЕТКА СЛЕДУЮЩЕГО НАМАЗА ---
         function highlightNextPrayer() {
             const next = getNextPrayer().name;
             document.querySelectorAll('.prayer-item').forEach(item => {
@@ -747,9 +800,7 @@
             });
         }
 
-        // --- 8. КНОПКА КАЛЕНДАРЯ (НА ИНТЕРАКТИВНАЯ) ---
         addToCalendarBtn.addEventListener('click', () => {
-            // Создаём событие в формате .ics
             const startDate = new Date(2026, 2, 14, 17, 0, 0);
             const endDate = new Date(2026, 2, 14, 19, 30, 0);
             
@@ -771,7 +822,6 @@ LOCATION:Высокая Гора, ул. Рождественская, 6В, кв.
 END:VEVENT
 END:VCALENDAR`;
             
-            // Создаём blob и ссылку
             const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
             const link = document.createElement('a');
             link.href = URL.createObjectURL(blob);
@@ -781,7 +831,6 @@ END:VCALENDAR`;
             document.body.removeChild(link);
         });
 
-        // --- ЗАПУСК ---
         updateNextPrayerTimer();
         updateIftarCountdown();
         highlightNextPrayer();
