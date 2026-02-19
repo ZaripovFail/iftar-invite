@@ -49,19 +49,20 @@
             z-index: 0;
         }
 
-        /* Прелоудер */
+        /* Прелоудер с анимацией заката */
         .preloader {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: #0b1015;
+            background: linear-gradient(180deg, #0b1a2a 0%, #1a2c3a 50%, #2b3e4a 100%);
             display: flex;
             justify-content: center;
             align-items: center;
             z-index: 9999;
             transition: opacity 1.8s cubic-bezier(0.77, 0, 0.18, 1), visibility 1.8s ease;
+            overflow: hidden;
         }
 
         .preloader.hidden {
@@ -69,52 +70,82 @@
             visibility: hidden;
         }
 
-        .preloader-content {
-            text-align: center;
-            opacity: 0;
-            animation: premiumFadeIn 2s ease-out forwards;
+        .preloader-sun {
+            position: absolute;
+            bottom: -100px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 150px;
+            height: 150px;
+            background: radial-gradient(circle at 30% 30%, #ffaa33, #ff6b35);
+            border-radius: 50%;
+            box-shadow: 0 0 100px #ff8c42;
+            animation: sunset 2.5s ease-out forwards;
+            z-index: 1;
+        }
+
+        @keyframes sunset {
+            0% { bottom: -100px; opacity: 0; }
+            20% { bottom: 20%; opacity: 1; }
+            80% { bottom: 20%; opacity: 0.8; }
+            100% { bottom: 120%; opacity: 0; }
+        }
+
+        .preloader-moon-container {
+            position: absolute;
+            top: -150px;
+            left: 50%;
+            transform: translateX(-50%);
+            animation: moonrise 2.5s ease-out forwards;
+            z-index: 2;
+        }
+
+        @keyframes moonrise {
+            0% { top: -150px; opacity: 0; }
+            40% { top: -150px; opacity: 0; }
+            60% { top: 30%; opacity: 1; }
+            100% { top: 30%; opacity: 1; }
         }
 
         .preloader-moon {
-            font-size: 5rem;
-            color: #c5a572;
-            margin-bottom: 30px;
-            filter: drop-shadow(0 0 30px rgba(197, 165, 114, 0.4));
-            animation: subtleFloat 4s infinite ease-in-out;
+            font-size: 6rem;
+            color: #fff9e6;
+            filter: drop-shadow(0 0 30px #ffd966);
+            text-shadow: 0 0 20px #f0e68c;
         }
 
-        .preloader-text {
+        .preloader-content {
+            position: relative;
+            z-index: 3;
+            text-align: center;
+            color: #fff9e6;
+            text-shadow: 0 0 20px rgba(0,0,0,0.5);
+        }
+
+        .preloader-title {
             font-family: 'Cormorant Garamond', serif;
-            font-size: 2.2rem;
-            letter-spacing: 0.15em;
-            color: #c5a572;
+            font-size: 2rem;
+            letter-spacing: 0.3em;
             margin-bottom: 30px;
             font-weight: 400;
-            text-transform: none;
+            text-transform: uppercase;
+            opacity: 0;
+            animation: fadeInUp 1s 1.2s forwards;
         }
 
-        .preloader-line {
-            width: 120px;
-            height: 1px;
-            background: linear-gradient(90deg, transparent, #c5a572, transparent);
-            margin: 0 auto;
-            animation: lineExpand 2s infinite;
+        .preloader-date {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.8rem;
+            letter-spacing: 0.15em;
+            margin-top: 40px;
+            font-weight: 300;
+            opacity: 0;
+            animation: fadeInUp 1s 1.4s forwards;
         }
 
-        @keyframes lineExpand {
-            0% { width: 0; opacity: 0; }
-            50% { width: 180px; opacity: 1; }
-            100% { width: 0; opacity: 0; }
-        }
-
-        @keyframes premiumFadeIn {
-            0% { opacity: 0; transform: translateY(15px); }
-            100% { opacity: 1; transform: translateY(0); }
-        }
-
-        @keyframes subtleFloat {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-8px); }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         /* Основной контент */
@@ -179,11 +210,11 @@
             letter-spacing: 0.12em;
         }
 
-        /* Новый блок с красивым текстом */
+        /* Блок с красивым текстом */
         .invitation-text {
             text-align: center;
             max-width: 700px;
-            margin: 0 auto 25px auto;
+            margin: 0 auto 45px auto;
             font-size: 1.15rem;
             line-height: 1.8;
             color: #d4c9bc;
@@ -199,30 +230,6 @@
         .invitation-text .highlight {
             color: #c5a572;
             font-weight: 400;
-        }
-
-        .subtitle {
-            text-align: center;
-            font-size: 1.1rem;
-            margin-bottom: 45px;
-            color: #a89f92;
-            font-weight: 300;
-            text-transform: uppercase;
-            letter-spacing: 0.2em;
-            position: relative;
-            padding-bottom: 25px;
-        }
-
-        .subtitle::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 60px;
-            height: 1px;
-            background: #c5a572;
-            opacity: 0.6;
         }
 
         /* Премиальные карточки */
@@ -376,7 +383,7 @@
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 25px;
-            margin-bottom: 40px;
+            margin-bottom: 30px;
         }
 
         .countdown-box {
@@ -411,36 +418,28 @@
             letter-spacing: 0.05em;
         }
 
-        /* Кнопка подтверждения */
-        .rsvp-container {
+        /* Хадис вместо кнопки */
+        .hadith-section {
             text-align: center;
-            margin-top: 20px;
+            margin: 30px 0 10px;
+            padding: 0 20px;
         }
 
-        .btn {
-            background: transparent;
+        .hadith-text {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.2rem;
+            font-style: italic;
             color: #c5a572;
-            font-size: 1.1rem;
-            font-weight: 400;
-            letter-spacing: 0.2em;
-            text-transform: uppercase;
-            padding: 18px 60px;
-            border-radius: 50px;
-            border: 1px solid rgba(197, 165, 114, 0.4);
-            cursor: pointer;
-            transition: all 0.3s;
-            font-family: 'Montserrat', sans-serif;
+            line-height: 1.6;
+            max-width: 700px;
+            margin: 0 auto;
         }
 
-        .btn:hover {
-            background: rgba(197, 165, 114, 0.1);
-            border-color: #c5a572;
-        }
-
-        .btn:disabled {
-            opacity: 0.3;
-            cursor: default;
-            pointer-events: none;
+        .hadith-author {
+            font-size: 0.9rem;
+            color: #7a7167;
+            margin-top: 12px;
+            letter-spacing: 0.05em;
         }
 
         .footer-note {
@@ -466,6 +465,8 @@
             h1 { font-size: 2.4rem; }
             .container { padding: 35px 25px; }
             .invitation-text { font-size: 1rem; }
+            .preloader-title { font-size: 1.5rem; }
+            .preloader-date { font-size: 1.3rem; }
         }
 
         @media (max-width: 500px) {
@@ -476,12 +477,15 @@
     </style>
 </head>
 <body>
-    <!-- Прелоудер -->
+    <!-- Прелоудер с закатом -->
     <div class="preloader" id="preloader">
-        <div class="preloader-content">
+        <div class="preloader-sun"></div>
+        <div class="preloader-moon-container">
             <div class="preloader-moon">☾</div>
-            <div class="preloader-text">14 марта 2026</div>
-            <div class="preloader-line"></div>
+        </div>
+        <div class="preloader-content">
+            <div class="preloader-title">Приглашение на ифтар</div>
+            <div class="preloader-date">14 марта 2026</div>
         </div>
     </div>
 
@@ -492,13 +496,11 @@
             
             <h1>Дорогие друзья</h1>
             
-            <!-- Новый блок с красивым текстом -->
+            <!-- Вступительный текст -->
             <div class="invitation-text">
                 <p>С огромной радостью приглашаем вас на <span class="highlight">традиционный семейный ифтар</span> — вечер разговения, наполненный теплом, светом и душевным общением.</p>
                 <p>Для нас большая честь разделить с вами этот благословенный час, собраться за одним столом в кругу близких и дорогих сердцу людей.</p>
             </div>
-            
-            <div class="subtitle">Приглашение на праздничный ифтар</div>
 
             <!-- Верхние карточки -->
             <div class="top-cards">
@@ -515,7 +517,7 @@
                 </div>
             </div>
 
-            <!-- Времена намазов (на сегодняшний день) -->
+            <!-- Времена намазов -->
             <div class="prayer-section">
                 <div class="prayer-header">
                     <h2>Время намаза · Казань</h2>
@@ -540,18 +542,18 @@
                 </div>
             </div>
 
-            <!-- Кнопка подтверждения -->
-            <div class="rsvp-container">
-                <button class="btn" id="rsvpBtn">Я приду</button>
+            <!-- Хадис вместо кнопки -->
+            <div class="hadith-section">
+                <div class="hadith-text">«Тот, кто накормит постящегося во время ифтара, получит такую же награду, как и постящийся, без уменьшения награды последнего»</div>
+                <div class="hadith-author">(хадис от Ат-Тирмизи)</div>
             </div>
-            <div class="footer-note" id="thankyouNote"></div>
             
             <div class="ornament-bottom"></div>
         </div>
     </div>
 
     <script>
-        // --- ДАННЫЕ ИЗ ТВОЕГО ФАЙЛА (полностью) ---
+        // --- ДАННЫЕ ИЗ ТВОЕГО ФАЙЛА ---
         const PRAYER_DATA = [
             { date: "19.02.2026", fajr: "04:55", sunrise: "07:00", dhuhr: "12:00", asr: "15:02", maghrib: "16:57", isha: "18:39" },
             { date: "20.02.2026", fajr: "04:53", sunrise: "06:57", dhuhr: "12:00", asr: "15:04", maghrib: "16:59", isha: "18:41" },
@@ -602,8 +604,6 @@
         const nextPrayerTimer = document.getElementById('nextPrayerTimer');
         const nextPrayerName = document.getElementById('nextPrayerName');
         const iftarCountdown = document.getElementById('iftarCountdown');
-        const rsvpBtn = document.getElementById('rsvpBtn');
-        const thankyouNote = document.getElementById('thankyouNote');
         const addToCalendarBtn = document.getElementById('addToCalendarBtn');
 
         // --- 1. СТАРТОВАЯ АНИМАЦИЯ ---
@@ -611,9 +611,8 @@
             setTimeout(() => {
                 preloader.classList.add('hidden');
                 mainContent.classList.add('visible');
-                // Прокрутка в начало страницы после загрузки
                 window.scrollTo(0, 0);
-            }, 2500);
+            }, 3000);
         });
 
         // --- 2. ПОЛУЧЕНИЕ ДАННЫХ ДЛЯ СЕГОДНЯШНЕЙ ДАТЫ ---
@@ -624,17 +623,15 @@
             const year = today.getFullYear();
             const todayStr = `${day}.${month}.${year}`;
             
-            // Ищем в данных, если нет - возвращаем 14 марта
             const found = PRAYER_DATA.find(item => item.date === todayStr);
             return found || PRAYER_DATA.find(item => item.date === "14.03.2026");
         }
 
-        // --- 3. ОТОБРАЖЕНИЕ НАМАЗОВ ДЛЯ СЕГОДНЯ ---
+        // --- 3. ОТОБРАЖЕНИЕ НАМАЗОВ ---
         function displayTodayPrayers() {
             const data = getTodayData();
             if (!data) return;
 
-            // Форматируем дату для отображения
             const [day, month, year] = data.date.split('.');
             const months = ['января', 'февраля', 'марта', 'апреля', 'мая', 'июня', 'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря'];
             currentDateDisplay.textContent = `${parseInt(day)} ${months[parseInt(month)-1]} ${year}`;
@@ -667,7 +664,6 @@
                     return { name: p.name, time: data[p.key] };
                 }
             }
-            // Если все намазы прошли - следующий Фаджр (завтра)
             return { name: "Фаджр", time: data.fajr };
         }
 
@@ -681,7 +677,6 @@
             const target = new Date(now);
             target.setHours(hours, minutes, 0, 0);
 
-            // Если время уже прошло сегодня, ставим на завтра
             if (target <= now) {
                 target.setDate(target.getDate() + 1);
             }
@@ -690,7 +685,6 @@
                 const now = new Date();
                 let diff = target - now;
 
-                // Если время наступило, пересчитываем следующий намаз
                 if (diff <= 0) {
                     const newNext = getNextPrayer();
                     nextPrayerName.textContent = `Следующий: ${newNext.name}`;
@@ -711,7 +705,7 @@
             setInterval(tick, 1000);
         }
 
-        // --- 6. ТАЙМЕР ДО ИФТАРА (14 МАРТА 2026 17:45) ---
+        // --- 6. ТАЙМЕР ДО ИФТАРА ---
         function updateIftarCountdown() {
             const targetDate = new Date(2026, 2, 14, 17, 45, 0);
 
@@ -753,16 +747,38 @@
             });
         }
 
-        // --- 8. КНОПКА КАЛЕНДАРЯ ---
+        // --- 8. КНОПКА КАЛЕНДАРЯ (НА ИНТЕРАКТИВНАЯ) ---
         addToCalendarBtn.addEventListener('click', () => {
-            const googleUrl = `https://www.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent('Ифтар')}&details=${encodeURIComponent('Приглашение на праздничный ифтар')}&location=${encodeURIComponent('Высокая Гора, ул. Рождественская, 6В, кв.28')}&dates=20260314T170000/20260314T193000`;
-            window.open(googleUrl, '_blank');
-        });
-
-        // --- 9. КНОПКА ПОДТВЕРЖДЕНИЯ ---
-        rsvpBtn.addEventListener('click', () => {
-            thankyouNote.textContent = 'Спасибо. Буду ждать вас.';
-            rsvpBtn.disabled = true;
+            // Создаём событие в формате .ics
+            const startDate = new Date(2026, 2, 14, 17, 0, 0);
+            const endDate = new Date(2026, 2, 14, 19, 30, 0);
+            
+            const formatDate = (date) => {
+                return date.toISOString().replace(/-/g, '').replace(/:/g, '').split('.')[0] + 'Z';
+            };
+            
+            const icsContent = `BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Invitation//RU
+BEGIN:VEVENT
+UID:${new Date().getTime()}@iftar
+DTSTAMP:${formatDate(new Date())}
+DTSTART:${formatDate(startDate)}
+DTEND:${formatDate(endDate)}
+SUMMARY:Ифтар
+DESCRIPTION:Приглашение на праздничный ифтар
+LOCATION:Высокая Гора, ул. Рождественская, 6В, кв.28
+END:VEVENT
+END:VCALENDAR`;
+            
+            // Создаём blob и ссылку
+            const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = 'iftar.ics';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
         });
 
         // --- ЗАПУСК ---
