@@ -49,14 +49,14 @@
             z-index: 0;
         }
 
-        /* Прелоудер */
+        /* Прелоудер с закатным фоном */
         .preloader {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(180deg, #0a1a2a 0%, #1f3848 70%, #2c4a5a 100%);
+            background: linear-gradient(145deg, #251d1a 0%, #3d2b23 40%, #734e3b 100%);
             display: flex;
             justify-content: center;
             align-items: center;
@@ -70,148 +70,50 @@
             visibility: hidden;
         }
 
-        /* Контейнер для небесных тел */
-        .celestial-container {
-            position: relative;
-            width: 100%;
-            height: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        /* Солнце (заходит справа налево по дуге) */
-        .sun {
-            position: absolute;
-            width: 120px;
-            height: 120px;
-            background: radial-gradient(circle at 30% 30%, #ffdb7c, #ff9f4b);
-            border-radius: 50%;
-            box-shadow: 0 0 100px #ffb347;
-            left: 120%;
-            top: 60%;
-            transform: translate(-50%, -50%);
-            animation: sunsetArc 2.8s ease-in-out forwards;
-            z-index: 1;
-        }
-
-        @keyframes sunsetArc {
-            0% {
-                left: 120%;
-                top: 60%;
-                opacity: 1;
-                transform: translate(-50%, -50%) scale(1);
-            }
-            40% {
-                left: 70%;
-                top: 45%;
-                opacity: 1;
-                transform: translate(-50%, -50%) scale(1);
-            }
-            70% {
-                left: 40%;
-                top: 55%;
-                opacity: 0.8;
-                transform: translate(-50%, -50%) scale(0.9);
-            }
-            100% {
-                left: -20%;
-                top: 80%;
-                opacity: 0;
-                transform: translate(-50%, -50%) scale(0.5);
-            }
-        }
-
-        /* Луна (убывающая, 23% освещенности - 25 лунный день) */
-        .moon-container {
-            position: absolute;
-            left: -20%;
-            top: 30%;
-            transform: translate(-50%, -50%);
-            animation: moonriseArc 3.2s ease-in-out forwards;
-            z-index: 2;
-            opacity: 0;
-        }
-
-        @keyframes moonriseArc {
-            0% {
-                left: -20%;
-                top: 30%;
-                opacity: 0;
-            }
-            50% {
-                left: -20%;
-                top: 30%;
-                opacity: 0;
-            }
-            75% {
-                left: 40%;
-                top: 25%;
-                opacity: 1;
-            }
-            100% {
-                left: 50%;
-                top: 25%;
-                opacity: 1;
-            }
-        }
-
-        .moon {
-            position: relative;
-            width: 90px;
-            height: 90px;
-            background: transparent;
-            border-radius: 50%;
-            box-shadow: 25px 0 0 0 #fff9e6;
-            transform: rotate(25deg);
-            filter: drop-shadow(0 0 30px #fff9e6);
-        }
-
-        /* Тонкая настройка для фазы 23% */
-        .moon::before {
-            content: '';
-            position: absolute;
-            width: 90px;
-            height: 90px;
-            background: #1f3848;
-            border-radius: 50%;
-            left: -5px;
-            top: 0;
-        }
-
-        /* Контейнер для текста */
-        .preloader-text-content {
-            position: relative;
-            z-index: 10;
+        .preloader-content {
             text-align: center;
-            color: #fff9e6;
-            text-shadow: 0 0 30px rgba(0,0,0,0.7);
-            margin-top: 150px;
+            opacity: 0;
+            animation: fadeInScale 2s ease-out forwards;
+            z-index: 2;
+        }
+
+        .preloader-moon {
+            font-size: 6rem;
+            color: #fff2d7;
+            margin-bottom: 30px;
+            filter: drop-shadow(0 0 40px #ffcc80);
+            animation: float 4s infinite ease-in-out;
+            display: inline-block;
         }
 
         .preloader-title {
             font-family: 'Cormorant Garamond', serif;
-            font-size: 2.2rem;
+            font-size: 2.4rem;
             letter-spacing: 0.3em;
             margin-bottom: 20px;
             font-weight: 400;
             text-transform: uppercase;
-            opacity: 0;
-            animation: fadeInUp 1s 3s forwards;
+            color: #fff2d7;
+            text-shadow: 0 0 20px rgba(255, 140, 60, 0.5);
         }
 
         .preloader-date {
             font-family: 'Cormorant Garamond', serif;
-            font-size: 2rem;
+            font-size: 2.2rem;
             letter-spacing: 0.15em;
             font-weight: 300;
-            opacity: 0;
-            animation: fadeInUp 1s 3.2s forwards;
+            color: #fff2d7;
+            text-shadow: 0 0 20px rgba(255, 140, 60, 0.5);
         }
 
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+        @keyframes fadeInScale {
+            0% { opacity: 0; transform: scale(0.9); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
         }
 
         /* Основной контент */
@@ -527,33 +429,21 @@
             .invitation-text { font-size: 1rem; }
             .preloader-title { font-size: 1.8rem; }
             .preloader-date { font-size: 1.6rem; }
+            .preloader-moon { font-size: 4rem; }
         }
 
         @media (max-width: 500px) {
             .prayer-grid {
                 grid-template-columns: repeat(2, 1fr);
             }
-            .sun { width: 80px; height: 80px; }
-            .moon { width: 60px; height: 60px; }
-            .moon::before { width: 60px; height: 60px; }
         }
     </style>
 </head>
 <body>
-    <!-- Прелоудер с закатом и восходом луны -->
+    <!-- Прелоудер с закатным фоном -->
     <div class="preloader" id="preloader">
-        <div class="celestial-container">
-            <!-- Солнце заходит справа налево по дуге -->
-            <div class="sun"></div>
-            
-            <!-- Луна появляется после захода солнца (убывающая, 23%) -->
-            <div class="moon-container">
-                <div class="moon"></div>
-            </div>
-        </div>
-        
-        <!-- Текст появляется только после луны -->
-        <div class="preloader-text-content">
+        <div class="preloader-content">
+            <div class="preloader-moon">☾</div>
             <div class="preloader-title">Приглашение на ифтар</div>
             <div class="preloader-date">14 марта 2026</div>
         </div>
@@ -671,7 +561,7 @@
                 preloader.classList.add('hidden');
                 mainContent.classList.add('visible');
                 window.scrollTo(0, 0);
-            }, 4500);
+            }, 2500);
         });
 
         function getTodayData() {
