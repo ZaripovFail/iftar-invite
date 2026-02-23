@@ -98,8 +98,8 @@
             transform: scale(1.1);
         }
 
-        /* Кнопка звука */
-        .sound-toggle {
+        /* Кнопка музыки */
+        .music-toggle {
             position: fixed;
             top: 20px;
             left: 20px;
@@ -119,12 +119,12 @@
             transition: all 0.3s;
         }
 
-        .sound-toggle:hover {
+        .music-toggle:hover {
             background: rgba(197, 165, 114, 0.4);
             transform: scale(1.1);
         }
 
-        .sound-toggle.muted {
+        .music-toggle.muted {
             opacity: 0.5;
         }
 
@@ -391,39 +391,6 @@
             font-weight: 600;
         }
 
-        .calendar-btn {
-            background: transparent;
-            color: #c5a572;
-            border: 1px solid rgba(197, 165, 114, 0.4);
-            padding: 12px 28px;
-            border-radius: 40px;
-            font-size: 0.85rem;
-            font-weight: 400;
-            letter-spacing: 0.1em;
-            text-transform: uppercase;
-            cursor: pointer;
-            transition: all 0.2s;
-            width: 100%;
-            max-width: 250px;
-            font-family: 'Montserrat', sans-serif;
-            margin: 0 auto;
-        }
-
-        .calendar-btn:hover {
-            background: rgba(197, 165, 114, 0.1);
-            border-color: #c5a572;
-        }
-
-        .calendar-note {
-            font-size: 0.75rem;
-            color: #7a7167;
-            margin-top: 12px;
-            font-style: normal;
-            letter-spacing: 0.05em;
-            text-align: center;
-            width: 100%;
-        }
-
         .prayer-section {
             margin-bottom: 40px;
             border-top: 1px solid rgba(197, 165, 114, 0.2);
@@ -644,7 +611,7 @@
             .preloader-title { font-size: 1.8rem; }
             .preloader-date { font-size: 1.6rem; }
             .preloader-moon { font-size: 4rem; }
-            .theme-toggle, .sound-toggle {
+            .theme-toggle, .music-toggle {
                 width: 40px;
                 height: 40px;
                 font-size: 1.2rem;
@@ -669,8 +636,8 @@
     <!-- Кнопка переключения темы -->
     <div class="theme-toggle" id="themeToggle">🌓</div>
 
-    <!-- Кнопка звука -->
-    <div class="sound-toggle muted" id="soundToggle">🔇</div>
+    <!-- Кнопка музыки -->
+    <div class="music-toggle muted" id="musicToggle">🎵</div>
 
     <!-- Секретное сообщение -->
     <div class="secret-message" id="secretMessage">
@@ -679,9 +646,9 @@
         <small>спасибо, что вы есть</small>
     </div>
 
-    <!-- Аудио элемент (тихий азан) -->
-    <audio id="azanAudio" loop preload="auto">
-        <source src="https://www.islamcan.com/audio/adhan/azan1.mp3" type="audio/mpeg">
+    <!-- Аудио элемент (восточный инструментал) -->
+    <audio id="musicAudio" loop preload="auto">
+        <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_8a4f2b0a6f.mp3?filename=oriental-ney-background-music-128339.mp3" type="audio/mpeg">
     </audio>
 
     <!-- Прелоудер с закатным фоном -->
@@ -715,14 +682,13 @@
                 <div class="card">
                     <div class="card-title">Дата и сбор</div>
                     <div class="card-value">14 марта 2026 · <span>17:00</span></div>
-                    <button class="calendar-btn" id="addToCalendarBtn">Добавить в календарь</button>
-                    <div class="calendar-note">Сохраните дату, чтобы не забыть</div>
+                    <div class="calendar-note" style="margin-top: 15px;">Ждём вас</div>
                 </div>
                 <div class="card">
                     <div class="card-title">Время ифтара</div>
                     <div class="card-value"><span>17:45</span></div>
                     <div style="color: #a89f92; font-size: 0.9rem; margin-bottom: 8px;">Магриб · 14 марта 2026</div>
-                    <div style="color: #c5a572; font-size: 1rem; letter-spacing: 0.02em;">Закат 17:45 · Ясно, 4°C</div>
+                    <div id="weatherDisplay" style="color: #c5a572; font-size: 1rem; letter-spacing: 0.02em;">Загрузка погоды...</div>
                 </div>
             </div>
 
@@ -821,10 +787,9 @@
         const nextPrayerTimer = document.getElementById('nextPrayerTimer');
         const nextPrayerName = document.getElementById('nextPrayerName');
         const iftarCountdown = document.getElementById('iftarCountdown');
-        const addToCalendarBtn = document.getElementById('addToCalendarBtn');
         const themeToggle = document.getElementById('themeToggle');
-        const soundToggle = document.getElementById('soundToggle');
-        const azanAudio = document.getElementById('azanAudio');
+        const musicToggle = document.getElementById('musicToggle');
+        const musicAudio = document.getElementById('musicAudio');
         const preloaderMoon = document.getElementById('preloaderMoon');
         const secretMessage = document.getElementById('secretMessage');
         const particles = document.getElementById('particles');
@@ -851,21 +816,21 @@
             document.body.classList.toggle('night-theme');
         });
 
-        // ========== 3. ЗВУК (АЗАН) ==========
-        let isSoundMuted = true;
+        // ========== 3. МУЗЫКА (восточный инструментал) ==========
+        let isMusicMuted = true;
         
-        soundToggle.addEventListener('click', () => {
-            if (isSoundMuted) {
-                azanAudio.play().catch(e => console.log('Аудио не может быть воспроизведено автоматически'));
-                soundToggle.textContent = '🔊';
-                soundToggle.classList.remove('muted');
+        musicToggle.addEventListener('click', () => {
+            if (isMusicMuted) {
+                musicAudio.play().catch(e => console.log('Музыка не может быть воспроизведена автоматически'));
+                musicToggle.textContent = '🔊';
+                musicToggle.classList.remove('muted');
             } else {
-                azanAudio.pause();
-                azanAudio.currentTime = 0;
-                soundToggle.textContent = '🔇';
-                soundToggle.classList.add('muted');
+                musicAudio.pause();
+                musicAudio.currentTime = 0;
+                musicToggle.textContent = '🎵';
+                musicToggle.classList.add('muted');
             }
-            isSoundMuted = !isSoundMuted;
+            isMusicMuted = !isMusicMuted;
         });
 
         // ========== 4. СЕКРЕТНОЕ СООБЩЕНИЕ (клик на луну) ==========
@@ -881,7 +846,36 @@
             }
         });
 
-        // ========== 5. ПРОГРЕСС-БАР РАМАДАНА (29 дней) ==========
+        // ========== 5. ПОГОДА ЧЕРЕЗ OPENWEATHERMAP API ==========
+        async function fetchWeather() {
+            const apiKey = '7447b5fcc62fd8a92ca23a07eda52782'; // Твой API ключ
+            const city = 'Kazan';
+            const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric&lang=ru`;
+            
+            try {
+                const response = await fetch(url);
+                const data = await response.json();
+                
+                if (data.cod === 200) {
+                    const temp = Math.round(data.main.temp);
+                    const description = data.weather[0].description;
+                    const wind = Math.round(data.wind.speed);
+                    
+                    // Делаем первую букву заглавной
+                    const descCapitalized = description.charAt(0).toUpperCase() + description.slice(1);
+                    
+                    document.getElementById('weatherDisplay').textContent = 
+                        `${descCapitalized}, ${temp}°C · Ветер ${wind} м/с`;
+                } else {
+                    document.getElementById('weatherDisplay').textContent = 'Ясно, 4°C · Лёгкий ветер';
+                }
+            } catch (error) {
+                console.log('Ошибка загрузки погоды:', error);
+                document.getElementById('weatherDisplay').textContent = 'Ясно, 4°C · Лёгкий ветер';
+            }
+        }
+
+        // ========== 6. ПРОГРЕСС-БАР РАМАДАНА (29 дней) ==========
         function updateRamadanProgress() {
             const today = new Date();
             const startOfRamadan = new Date(2026, 1, 19); // 19 февраля 2026
@@ -903,7 +897,7 @@
         }
         updateRamadanProgress();
 
-        // ========== 6. ОСНОВНАЯ ЛОГИКА НАМАЗОВ ==========
+        // ========== 7. ОСНОВНАЯ ЛОГИКА НАМАЗОВ ==========
         window.addEventListener('load', () => {
             setTimeout(() => {
                 preloader.classList.add('hidden');
@@ -1038,78 +1032,14 @@
             });
         }
 
-        // ========== 7. УМНАЯ КНОПКА КАЛЕНДАРЯ ==========
-        addToCalendarBtn.addEventListener('click', () => {
-            const startDate = new Date(2026, 2, 14, 17, 0, 0);
-            const endDate = new Date(2026, 2, 14, 19, 30, 0);
-            
-            // Определяем устройство
-            const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
-            const isAndroid = /Android/.test(navigator.userAgent);
-            
-            const formatDate = (date) => {
-                return date.toISOString().replace(/-/g, '').replace(/:/g, '').split('.')[0] + 'Z';
-            };
-            
-            if (isIOS) {
-                // iOS: открываем в календаре через .ics
-                const icsContent = `BEGIN:VCALENDAR
-VERSION:2.0
-PRODID:-//Invitation//RU
-BEGIN:VEVENT
-UID:${new Date().getTime()}@iftar
-DTSTAMP:${formatDate(new Date())}
-DTSTART:${formatDate(startDate)}
-DTEND:${formatDate(endDate)}
-SUMMARY:Ифтар
-DESCRIPTION:Приглашение на праздничный ифтар
-LOCATION:Высокая Гора, ул. Рождественская, 6В, кв.28
-END:VEVENT
-END:VCALENDAR`;
-                
-                const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
-                const link = document.createElement('a');
-                link.href = URL.createObjectURL(blob);
-                link.download = 'iftar.ics';
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
-            } else if (isAndroid) {
-                // Android: Google Calendar ссылка
-                const googleUrl = `https://www.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent('Ифтар')}&dates=${formatDate(startDate)}/${formatDate(endDate)}&details=${encodeURIComponent('Приглашение на праздничный ифтар')}&location=${encodeURIComponent('Высокая Гора, ул. Рождественская, 6В, кв.28')}`;
-                window.open(googleUrl, '_blank');
-            } else {
-                // Компьютер: скачиваем .ics
-                const icsContent = `BEGIN:VCALENDAR
-VERSION:2.0
-PRODID:-//Invitation//RU
-BEGIN:VEVENT
-UID:${new Date().getTime()}@iftar
-DTSTAMP:${formatDate(new Date())}
-DTSTART:${formatDate(startDate)}
-DTEND:${formatDate(endDate)}
-SUMMARY:Ифтар
-DESCRIPTION:Приглашение на праздничный ифтар
-LOCATION:Высокая Гора, ул. Рождественская, 6В, кв.28
-END:VEVENT
-END:VCALENDAR`;
-                
-                const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
-                const link = document.createElement('a');
-                link.href = URL.createObjectURL(blob);
-                link.download = 'iftar.ics';
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
-            }
-        });
-
-        // Запуск таймеров
+        // Запуск
+        fetchWeather();
         updateNextPrayerTimer();
         updateIftarCountdown();
         highlightNextPrayer();
         setInterval(highlightNextPrayer, 60000);
         setInterval(updateRamadanProgress, 3600000); // обновление прогресса каждый час
+        setInterval(fetchWeather, 600000); // обновление погоды каждые 10 минут
     </script>
 </body>
 </html>
