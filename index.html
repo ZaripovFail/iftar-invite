@@ -31,22 +31,136 @@
             line-height: 1.6;
             position: relative;
             overflow-x: hidden;
+            transition: background 0.5s ease;
         }
 
-        /* Премиальный фон с текстурой */
-        body::before {
-            content: '';
-            position: absolute;
+        body.night-theme {
+            background: #03060a;
+        }
+
+        body.night-theme .container {
+            background: rgba(5, 10, 15, 0.9);
+        }
+
+        body.night-theme .preloader {
+            background: linear-gradient(145deg, #0f151a 0%, #1a2128 100%);
+        }
+
+        /* Плавающие частицы */
+        .particles {
+            position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: 
-                radial-gradient(circle at 20% 30%, rgba(180, 150, 100, 0.08) 0%, transparent 30%),
-                radial-gradient(circle at 80% 70%, rgba(140, 120, 80, 0.08) 0%, transparent 30%),
-                repeating-linear-gradient(45deg, rgba(200, 175, 120, 0.02) 0px, rgba(200, 175, 120, 0.02) 2px, transparent 2px, transparent 6px);
             pointer-events: none;
-            z-index: 0;
+            z-index: 1;
+        }
+
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: rgba(197, 165, 114, 0.4);
+            border-radius: 50%;
+            box-shadow: 0 0 10px #c5a572;
+            animation: floatParticle 15s infinite linear;
+        }
+
+        @keyframes floatParticle {
+            from { transform: translateY(100vh) rotate(0deg); }
+            to { transform: translateY(-100vh) rotate(360deg); }
+        }
+
+        /* Кнопка переключения темы */
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 100;
+            background: rgba(197, 165, 114, 0.2);
+            backdrop-filter: blur(10px);
+            border: 1px solid #c5a572;
+            color: #c5a572;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 1.5rem;
+            transition: all 0.3s;
+        }
+
+        .theme-toggle:hover {
+            background: rgba(197, 165, 114, 0.4);
+            transform: scale(1.1);
+        }
+
+        /* Кнопка звука */
+        .sound-toggle {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 100;
+            background: rgba(197, 165, 114, 0.2);
+            backdrop-filter: blur(10px);
+            border: 1px solid #c5a572;
+            color: #c5a572;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 1.5rem;
+            transition: all 0.3s;
+        }
+
+        .sound-toggle:hover {
+            background: rgba(197, 165, 114, 0.4);
+            transform: scale(1.1);
+        }
+
+        .sound-toggle.muted {
+            opacity: 0.5;
+        }
+
+        /* Прогресс-бар Рамадана */
+        .ramadan-progress {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 100;
+            background: rgba(10, 15, 20, 0.8);
+            backdrop-filter: blur(10px);
+            border-radius: 50px;
+            padding: 12px 25px;
+            border: 1px solid #c5a572;
+            color: #e4dcd0;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            min-width: 280px;
+        }
+
+        .progress-bar {
+            width: 150px;
+            height: 6px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #c5a572, #e6c27c);
+            border-radius: 3px;
+            transition: width 0.3s;
         }
 
         /* Прелоудер с закатным фоном */
@@ -84,6 +198,7 @@
             filter: drop-shadow(0 0 40px #ffcc80);
             animation: float 4s infinite ease-in-out;
             display: inline-block;
+            cursor: pointer;
         }
 
         .preloader-title {
@@ -114,6 +229,41 @@
         @keyframes float {
             0%, 100% { transform: translateY(0); }
             50% { transform: translateY(-15px); }
+        }
+
+        /* Секретное сообщение */
+        .secret-message {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(10, 15, 20, 0.95);
+            backdrop-filter: blur(20px);
+            padding: 30px 40px;
+            border-radius: 32px;
+            border: 2px solid #c5a572;
+            color: #fff2d7;
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.5rem;
+            text-align: center;
+            z-index: 10000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.5s;
+            box-shadow: 0 0 50px rgba(197, 165, 114, 0.3);
+            max-width: 400px;
+        }
+
+        .secret-message.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .secret-message small {
+            display: block;
+            margin-top: 15px;
+            font-size: 1rem;
+            color: #a89f92;
         }
 
         /* Основной контент */
@@ -151,6 +301,31 @@
             background: linear-gradient(90deg, transparent, #c5a572, #c5a572, #c5a572, transparent);
         }
 
+        /* Анимированный узор */
+        .pattern-container {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            width: 100px;
+            height: 100px;
+            opacity: 0.2;
+            pointer-events: none;
+            animation: rotatePattern 60s linear infinite;
+        }
+
+        .pattern {
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="%23c5a572"><path d="M50 10 L55 30 L75 30 L60 45 L65 65 L50 55 L35 65 L40 45 L25 30 L45 30 Z"/></svg>');
+            background-size: contain;
+            opacity: 0.5;
+        }
+
+        @keyframes rotatePattern {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
         .container {
             background: rgba(18, 24, 30, 0.85);
             backdrop-filter: blur(15px);
@@ -160,6 +335,7 @@
             box-shadow: 0 30px 60px rgba(0, 0, 0, 0.9), 0 1px 2px rgba(197, 165, 114, 0.2) inset;
             border: 1px solid rgba(197, 165, 114, 0.25);
             position: relative;
+            transition: background 0.5s ease;
         }
 
         h1, h2, h3 {
@@ -213,11 +389,16 @@
             border: 1px solid rgba(197, 165, 114, 0.25);
             box-shadow: 0 15px 25px -10px rgba(0, 0, 0, 0.5);
             transition: all 0.3s ease;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
         .card:hover {
-            border-color: rgba(197, 165, 114, 0.5);
-            box-shadow: 0 20px 30px -8px rgba(197, 165, 114, 0.15);
+            border-color: #c5a572;
+            box-shadow: 0 0 30px rgba(197, 165, 114, 0.3), 0 20px 30px -8px rgba(197, 165, 114, 0.15);
+            transform: translateY(-2px);
         }
 
         .card-title {
@@ -227,6 +408,7 @@
             color: #a89f92;
             margin-bottom: 15px;
             font-weight: 400;
+            width: 100%;
         }
 
         .card-value {
@@ -236,6 +418,7 @@
             margin-bottom: 15px;
             font-family: 'Cormorant Garamond', serif;
             line-height: 1.2;
+            width: 100%;
         }
 
         .card-value span {
@@ -256,7 +439,9 @@
             cursor: pointer;
             transition: all 0.2s;
             width: 100%;
+            max-width: 250px;
             font-family: 'Montserrat', sans-serif;
+            margin: 0 auto;
         }
 
         .calendar-btn:hover {
@@ -271,6 +456,7 @@
             font-style: normal;
             letter-spacing: 0.05em;
             text-align: center;
+            width: 100%;
         }
 
         .prayer-section {
@@ -356,6 +542,12 @@
             padding: 28px 20px;
             border: 1px solid rgba(197, 165, 114, 0.25);
             text-align: center;
+            transition: all 0.3s;
+        }
+
+        .countdown-box:hover {
+            border-color: #c5a572;
+            box-shadow: 0 0 20px rgba(197, 165, 114, 0.2);
         }
 
         .countdown-label {
@@ -380,6 +572,27 @@
             font-size: 0.8rem;
             color: #7a7167;
             letter-spacing: 0.05em;
+        }
+
+        /* Блок погоды */
+        .weather-box {
+            background: rgba(197, 165, 114, 0.1);
+            border-radius: 40px;
+            padding: 15px 25px;
+            margin-bottom: 30px;
+            text-align: center;
+            border: 1px solid rgba(197, 165, 114, 0.3);
+            font-size: 1rem;
+            color: #e4dcd0;
+            display: inline-block;
+            width: auto;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .weather-box span {
+            color: #c5a572;
+            font-weight: 400;
         }
 
         .hadith-section {
@@ -418,6 +631,10 @@
             .prayer-grid {
                 grid-template-columns: repeat(3, 1fr);
             }
+            .ramadan-progress {
+                min-width: 200px;
+                font-size: 0.8rem;
+            }
         }
 
         @media (max-width: 700px) {
@@ -430,20 +647,60 @@
             .preloader-title { font-size: 1.8rem; }
             .preloader-date { font-size: 1.6rem; }
             .preloader-moon { font-size: 4rem; }
+            .theme-toggle, .sound-toggle {
+                width: 40px;
+                height: 40px;
+                font-size: 1.2rem;
+            }
         }
 
         @media (max-width: 500px) {
             .prayer-grid {
                 grid-template-columns: repeat(2, 1fr);
             }
+            .ramadan-progress {
+                flex-direction: column;
+                gap: 8px;
+                width: 90%;
+            }
         }
     </style>
 </head>
 <body>
+    <!-- Плавающие частицы -->
+    <div class="particles" id="particles"></div>
+
+    <!-- Кнопка переключения темы -->
+    <div class="theme-toggle" id="themeToggle">🌓</div>
+
+    <!-- Кнопка звука -->
+    <div class="sound-toggle muted" id="soundToggle">🔇</div>
+
+    <!-- Прогресс-бар Рамадана -->
+    <div class="ramadan-progress">
+        <span>Рамадан 2026</span>
+        <div class="progress-bar">
+            <div class="progress-fill" id="ramadanProgress" style="width: 45%;"></div>
+        </div>
+        <span id="ramadanDays">день 14/30</span>
+    </div>
+
+    <!-- Секретное сообщение -->
+    <div class="secret-message" id="secretMessage">
+        ✨ Для самых близких ✨<br>
+        «Пусть этот вечер будет наполнен светом ваших сердец»
+        <small>спасибо, что вы есть</small>
+    </div>
+
+    <!-- Аудио элемент (тихий азан) -->
+    <audio id="azanAudio" loop preload="auto">
+        <source src="https://www.islamcan.com/audio/adhan/azan1.mp3" type="audio/mpeg">
+    </audio>
+
     <!-- Прелоудер с закатным фоном -->
     <div class="preloader" id="preloader">
         <div class="preloader-content">
-            <div class="preloader-moon">☾</div>
+            <div class="preloader-moon" id="preloaderMoon">☾</div>
             <div class="preloader-title">Приглашение на ифтар</div>
             <div class="preloader-date">14 марта 2026</div>
         </div>
@@ -454,11 +711,21 @@
         <div class="container">
             <div class="ornament-top"></div>
             
+            <!-- Анимированный узор -->
+            <div class="pattern-container">
+                <div class="pattern"></div>
+            </div>
+            
             <h1>Дорогие друзья</h1>
             
             <div class="invitation-text">
                 <p>С огромной радостью приглашаем вас на <span class="highlight">традиционный семейный ифтар</span> — вечер разговения, наполненный теплом, светом и душевным общением.</p>
                 <p>Для нас большая честь разделить с вами этот благословенный час, собраться за одним столом в кругу близких и дорогих сердцу людей.</p>
+            </div>
+
+            <!-- Погода -->
+            <div class="weather-box">
+                <span>🌅 Закат в 17:45 · ☀️ Ясно, 4°C · 🍃 Лёгкий ветер</span>
             </div>
 
             <div class="top-cards">
@@ -506,6 +773,7 @@
     </div>
 
     <script>
+        // Данные намазов
         const PRAYER_DATA = [
             { date: "19.02.2026", fajr: "04:55", sunrise: "07:00", dhuhr: "12:00", asr: "15:02", maghrib: "16:57", isha: "18:39" },
             { date: "20.02.2026", fajr: "04:53", sunrise: "06:57", dhuhr: "12:00", asr: "15:04", maghrib: "16:59", isha: "18:41" },
@@ -547,6 +815,7 @@
             { name: "Иша", key: "isha" }
         ];
 
+        // Элементы
         const preloader = document.getElementById('preloader');
         const mainContent = document.getElementById('mainContent');
         const prayerGrid = document.getElementById('prayerGrid');
@@ -555,7 +824,88 @@
         const nextPrayerName = document.getElementById('nextPrayerName');
         const iftarCountdown = document.getElementById('iftarCountdown');
         const addToCalendarBtn = document.getElementById('addToCalendarBtn');
+        const themeToggle = document.getElementById('themeToggle');
+        const soundToggle = document.getElementById('soundToggle');
+        const azanAudio = document.getElementById('azanAudio');
+        const preloaderMoon = document.getElementById('preloaderMoon');
+        const secretMessage = document.getElementById('secretMessage');
+        const particles = document.getElementById('particles');
 
+        // ========== 1. ПЛАВАЮЩИЕ ЧАСТИЦЫ ==========
+        function createParticles(count = 30) {
+            for (let i = 0; i < count; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                const size = Math.random() * 6 + 2;
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                particle.style.left = `${Math.random() * 100}%`;
+                particle.style.animationDuration = `${Math.random() * 20 + 15}s`;
+                particle.style.animationDelay = `${Math.random() * 5}s`;
+                particle.style.opacity = Math.random() * 0.5 + 0.2;
+                particles.appendChild(particle);
+            }
+        }
+        createParticles();
+
+        // ========== 2. ПЕРЕКЛЮЧЕНИЕ ТЕМЫ ==========
+        themeToggle.addEventListener('click', () => {
+            document.body.classList.toggle('night-theme');
+        });
+
+        // ========== 3. ЗВУК (АЗАН) ==========
+        let isSoundMuted = true;
+        
+        soundToggle.addEventListener('click', () => {
+            if (isSoundMuted) {
+                azanAudio.play().catch(e => console.log('Аудио не может быть воспроизведено автоматически'));
+                soundToggle.textContent = '🔊';
+                soundToggle.classList.remove('muted');
+            } else {
+                azanAudio.pause();
+                azanAudio.currentTime = 0;
+                soundToggle.textContent = '🔇';
+                soundToggle.classList.add('muted');
+            }
+            isSoundMuted = !isSoundMuted;
+        });
+
+        // ========== 4. СЕКРЕТНОЕ СООБЩЕНИЕ (клик на луну) ==========
+        let clickCount = 0;
+        preloaderMoon.addEventListener('click', () => {
+            clickCount++;
+            if (clickCount >= 5) {
+                secretMessage.classList.add('show');
+                setTimeout(() => {
+                    secretMessage.classList.remove('show');
+                }, 5000);
+                clickCount = 0;
+            }
+        });
+
+        // ========== 5. ПРОГРЕСС-БАР РАМАДАНА ==========
+        function updateRamadanProgress() {
+            const today = new Date();
+            const startOfRamadan = new Date(2026, 1, 19); // 19 февраля 2026
+            const endOfRamadan = new Date(2026, 2, 19); // 19 марта 2026
+            
+            if (today < startOfRamadan) {
+                document.getElementById('ramadanDays').textContent = 'Рамадан ещё не начался';
+                document.querySelector('.progress-fill').style.width = '0%';
+            } else if (today > endOfRamadan) {
+                document.getElementById('ramadanDays').textContent = 'Рамадан завершён';
+                document.querySelector('.progress-fill').style.width = '100%';
+            } else {
+                const totalDays = 30;
+                const daysPassed = Math.floor((today - startOfRamadan) / (1000 * 60 * 60 * 24)) + 1;
+                const percent = (daysPassed / totalDays) * 100;
+                document.querySelector('.progress-fill').style.width = `${percent}%`;
+                document.getElementById('ramadanDays').textContent = `день ${daysPassed}/${totalDays}`;
+            }
+        }
+        updateRamadanProgress();
+
+        // ========== 6. ОСНОВНАЯ ЛОГИКА НАМАЗОВ ==========
         window.addEventListener('load', () => {
             setTimeout(() => {
                 preloader.classList.add('hidden');
@@ -690,15 +1040,22 @@
             });
         }
 
+        // ========== 7. УМНАЯ КНОПКА КАЛЕНДАРЯ ==========
         addToCalendarBtn.addEventListener('click', () => {
             const startDate = new Date(2026, 2, 14, 17, 0, 0);
             const endDate = new Date(2026, 2, 14, 19, 30, 0);
+            
+            // Определяем устройство
+            const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+            const isAndroid = /Android/.test(navigator.userAgent);
             
             const formatDate = (date) => {
                 return date.toISOString().replace(/-/g, '').replace(/:/g, '').split('.')[0] + 'Z';
             };
             
-            const icsContent = `BEGIN:VCALENDAR
+            if (isIOS) {
+                // iOS: открываем в календаре через .ics
+                const icsContent = `BEGIN:VCALENDAR
 VERSION:2.0
 PRODID:-//Invitation//RU
 BEGIN:VEVENT
@@ -711,20 +1068,50 @@ DESCRIPTION:Приглашение на праздничный ифтар
 LOCATION:Высокая Гора, ул. Рождественская, 6В, кв.28
 END:VEVENT
 END:VCALENDAR`;
-            
-            const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
-            const link = document.createElement('a');
-            link.href = URL.createObjectURL(blob);
-            link.download = 'iftar.ics';
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
+                
+                const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
+                const link = document.createElement('a');
+                link.href = URL.createObjectURL(blob);
+                link.download = 'iftar.ics';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            } else if (isAndroid) {
+                // Android: Google Calendar ссылка
+                const googleUrl = `https://www.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent('Ифтар')}&dates=${formatDate(startDate)}/${formatDate(endDate)}&details=${encodeURIComponent('Приглашение на праздничный ифтар')}&location=${encodeURIComponent('Высокая Гора, ул. Рождественская, 6В, кв.28')}`;
+                window.open(googleUrl, '_blank');
+            } else {
+                // Компьютер: скачиваем .ics
+                const icsContent = `BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Invitation//RU
+BEGIN:VEVENT
+UID:${new Date().getTime()}@iftar
+DTSTAMP:${formatDate(new Date())}
+DTSTART:${formatDate(startDate)}
+DTEND:${formatDate(endDate)}
+SUMMARY:Ифтар
+DESCRIPTION:Приглашение на праздничный ифтар
+LOCATION:Высокая Гора, ул. Рождественская, 6В, кв.28
+END:VEVENT
+END:VCALENDAR`;
+                
+                const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
+                const link = document.createElement('a');
+                link.href = URL.createObjectURL(blob);
+                link.download = 'iftar.ics';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            }
         });
 
+        // Запуск таймеров
         updateNextPrayerTimer();
         updateIftarCountdown();
         highlightNextPrayer();
         setInterval(highlightNextPrayer, 60000);
+        setInterval(updateRamadanProgress, 60000); // обновление прогресса каждый час
     </script>
 </body>
 </html>
