@@ -128,41 +128,6 @@
             opacity: 0.5;
         }
 
-        /* Прогресс-бар Рамадана */
-        .ramadan-progress {
-            position: fixed;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 100;
-            background: rgba(10, 15, 20, 0.8);
-            backdrop-filter: blur(10px);
-            border-radius: 50px;
-            padding: 12px 25px;
-            border: 1px solid #c5a572;
-            color: #e4dcd0;
-            font-size: 0.9rem;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            min-width: 280px;
-        }
-
-        .progress-bar {
-            width: 150px;
-            height: 6px;
-            background: rgba(255,255,255,0.1);
-            border-radius: 3px;
-            overflow: hidden;
-        }
-
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, #c5a572, #e6c27c);
-            border-radius: 3px;
-            transition: width 0.3s;
-        }
-
         /* Прелоудер с закатным фоном */
         .preloader {
             position: fixed;
@@ -574,30 +539,9 @@
             letter-spacing: 0.05em;
         }
 
-        /* Блок погоды */
-        .weather-box {
-            background: rgba(197, 165, 114, 0.1);
-            border-radius: 40px;
-            padding: 15px 25px;
-            margin-bottom: 30px;
-            text-align: center;
-            border: 1px solid rgba(197, 165, 114, 0.3);
-            font-size: 1rem;
-            color: #e4dcd0;
-            display: inline-block;
-            width: auto;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        .weather-box span {
-            color: #c5a572;
-            font-weight: 400;
-        }
-
         .hadith-section {
             text-align: center;
-            margin: 30px 0 10px;
+            margin: 30px 0 30px;
             padding: 0 20px;
         }
 
@@ -618,6 +562,63 @@
             letter-spacing: 0.05em;
         }
 
+        /* Отдельное окошко для Рамадана (29 дней) */
+        .ramadan-box {
+            background: rgba(10, 15, 20, 0.7);
+            border-radius: 24px;
+            padding: 25px 25px;
+            border: 1px solid rgba(197, 165, 114, 0.25);
+            margin: 0 0 15px 0;
+            text-align: center;
+            max-width: 400px;
+            margin-left: auto;
+            margin-right: auto;
+            transition: all 0.3s;
+        }
+
+        .ramadan-box:hover {
+            border-color: #c5a572;
+            box-shadow: 0 0 20px rgba(197, 165, 114, 0.15);
+        }
+
+        .ramadan-label {
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            color: #a89f92;
+            margin-bottom: 15px;
+        }
+
+        .ramadan-progress-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .ramadan-progress-bar {
+            width: 200px;
+            height: 8px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .ramadan-progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #c5a572, #e6c27c);
+            border-radius: 4px;
+            transition: width 0.3s;
+        }
+
+        .ramadan-days {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.2rem;
+            color: #c5a572;
+            min-width: 100px;
+        }
+
         .footer-note {
             text-align: center;
             margin-top: 25px;
@@ -630,10 +631,6 @@
         @media (max-width: 800px) {
             .prayer-grid {
                 grid-template-columns: repeat(3, 1fr);
-            }
-            .ramadan-progress {
-                min-width: 200px;
-                font-size: 0.8rem;
             }
         }
 
@@ -658,10 +655,9 @@
             .prayer-grid {
                 grid-template-columns: repeat(2, 1fr);
             }
-            .ramadan-progress {
+            .ramadan-progress-container {
                 flex-direction: column;
                 gap: 8px;
-                width: 90%;
             }
         }
     </style>
@@ -675,15 +671,6 @@
 
     <!-- Кнопка звука -->
     <div class="sound-toggle muted" id="soundToggle">🔇</div>
-
-    <!-- Прогресс-бар Рамадана -->
-    <div class="ramadan-progress">
-        <span>Рамадан 2026</span>
-        <div class="progress-bar">
-            <div class="progress-fill" id="ramadanProgress" style="width: 45%;"></div>
-        </div>
-        <span id="ramadanDays">день 14/30</span>
-    </div>
 
     <!-- Секретное сообщение -->
     <div class="secret-message" id="secretMessage">
@@ -723,11 +710,7 @@
                 <p>Для нас большая честь разделить с вами этот благословенный час, собраться за одним столом в кругу близких и дорогих сердцу людей.</p>
             </div>
 
-            <!-- Погода -->
-            <div class="weather-box">
-                <span>🌅 Закат в 17:45 · ☀️ Ясно, 4°C · 🍃 Лёгкий ветер</span>
-            </div>
-
+            <!-- Верхние карточки -->
             <div class="top-cards">
                 <div class="card">
                     <div class="card-title">Дата и сбор</div>
@@ -738,10 +721,12 @@
                 <div class="card">
                     <div class="card-title">Время ифтара</div>
                     <div class="card-value"><span>17:45</span></div>
-                    <div style="color: #7a7167; font-size: 0.9rem;">Магриб · 14 марта 2026</div>
+                    <div style="color: #a89f92; font-size: 0.9rem; margin-bottom: 8px;">Магриб · 14 марта 2026</div>
+                    <div style="color: #c5a572; font-size: 1rem; letter-spacing: 0.02em;">Закат 17:45 · Ясно, 4°C</div>
                 </div>
             </div>
 
+            <!-- Времена намазов -->
             <div class="prayer-section">
                 <div class="prayer-header">
                     <h2>Время намаза · Казань</h2>
@@ -750,6 +735,7 @@
                 <div class="prayer-grid" id="prayerGrid"></div>
             </div>
 
+            <!-- Двойной отсчет -->
             <div class="countdown-container">
                 <div class="countdown-box">
                     <div class="countdown-label">До ближайшего намаза</div>
@@ -763,9 +749,21 @@
                 </div>
             </div>
 
+            <!-- Хадис -->
             <div class="hadith-section">
                 <div class="hadith-text">«Тот, кто накормит постящегося во время ифтара, получит такую же награду, как и постящийся, без уменьшения награды последнего»</div>
                 <div class="hadith-author">(хадис от Ат-Тирмизи)</div>
+            </div>
+
+            <!-- Отдельное окошко с прогрессом Рамадана (29 дней) -->
+            <div class="ramadan-box">
+                <div class="ramadan-label">Рамадан 2026</div>
+                <div class="ramadan-progress-container">
+                    <div class="ramadan-progress-bar">
+                        <div class="ramadan-progress-fill" id="ramadanProgressFill" style="width: 17%;"></div>
+                    </div>
+                    <div class="ramadan-days" id="ramadanDaysText">день 5/29</div>
+                </div>
             </div>
             
             <div class="ornament-bottom"></div>
@@ -883,24 +881,24 @@
             }
         });
 
-        // ========== 5. ПРОГРЕСС-БАР РАМАДАНА ==========
+        // ========== 5. ПРОГРЕСС-БАР РАМАДАНА (29 дней) ==========
         function updateRamadanProgress() {
             const today = new Date();
             const startOfRamadan = new Date(2026, 1, 19); // 19 февраля 2026
             const endOfRamadan = new Date(2026, 2, 19); // 19 марта 2026
+            const totalDays = 29; // В этом году 29 дней
             
             if (today < startOfRamadan) {
-                document.getElementById('ramadanDays').textContent = 'Рамадан ещё не начался';
-                document.querySelector('.progress-fill').style.width = '0%';
+                document.getElementById('ramadanDaysText').textContent = 'Рамадан скоро';
+                document.getElementById('ramadanProgressFill').style.width = '0%';
             } else if (today > endOfRamadan) {
-                document.getElementById('ramadanDays').textContent = 'Рамадан завершён';
-                document.querySelector('.progress-fill').style.width = '100%';
+                document.getElementById('ramadanDaysText').textContent = 'Рамадан завершён';
+                document.getElementById('ramadanProgressFill').style.width = '100%';
             } else {
-                const totalDays = 30;
                 const daysPassed = Math.floor((today - startOfRamadan) / (1000 * 60 * 60 * 24)) + 1;
                 const percent = (daysPassed / totalDays) * 100;
-                document.querySelector('.progress-fill').style.width = `${percent}%`;
-                document.getElementById('ramadanDays').textContent = `день ${daysPassed}/${totalDays}`;
+                document.getElementById('ramadanProgressFill').style.width = `${percent}%`;
+                document.getElementById('ramadanDaysText').textContent = `день ${daysPassed}/${totalDays}`;
             }
         }
         updateRamadanProgress();
@@ -1111,7 +1109,7 @@ END:VCALENDAR`;
         updateIftarCountdown();
         highlightNextPrayer();
         setInterval(highlightNextPrayer, 60000);
-        setInterval(updateRamadanProgress, 60000); // обновление прогресса каждый час
+        setInterval(updateRamadanProgress, 3600000); // обновление прогресса каждый час
     </script>
 </body>
 </html>
