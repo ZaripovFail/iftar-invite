@@ -646,14 +646,6 @@
         <small>спасибо, что вы есть</small>
     </div>
 
-   <!-- Аудио элемент (восточный инструментал без слов) -->
-<audio id="musicAudio" loop preload="auto" style="display: none;">
-    <source src="https://www.chosic.com/wp-content/uploads/2021/07/The-Ethnic-Recordings-Arabic-EDM.mp3" type="audio/mpeg">
-    <source src="https://www.chosic.com/wp-content/uploads/2021/07/Arabic-Love-Song.mp3" type="audio/mpeg">
-    <source src="https://files.freemusicarchive.org/storage-freemusicarchive-org/music/Creative_Commons/Sergey_Cheremisinov/Single/Sergey_Cheremisinov_-_01_-_Lullaby.mp3" type="audio/mpeg">
-    Ваш браузер не поддерживает аудио
-</audio>
-
     <!-- Прелоудер с закатным фоном -->
     <div class="preloader" id="preloader">
         <div class="preloader-content">
@@ -792,7 +784,6 @@
         const iftarCountdown = document.getElementById('iftarCountdown');
         const themeToggle = document.getElementById('themeToggle');
         const musicToggle = document.getElementById('musicToggle');
-        const musicAudio = document.getElementById('musicAudio');
         const preloaderMoon = document.getElementById('preloaderMoon');
         const secretMessage = document.getElementById('secretMessage');
         const particles = document.getElementById('particles');
@@ -819,24 +810,100 @@
             document.body.classList.toggle('night-theme');
         });
 
-        // ========== 3. МУЗЫКА (восточный инструментал) ==========
-        let isMusicMuted = true;
-        
+        // ========== 3. МУЗЫКА ЧЕРЕЗ WEB AUDIO API ==========
+        let audioContext;
+        let isMusicPlaying = false;
+        let gainNode;
+        let oscillator1, oscillator2, oscillator3, vibrato;
+
+        function initAudio() {
+            if (audioContext) return;
+            
+            try {
+                audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                gainNode = audioContext.createGain();
+                gainNode.gain.value = 0;
+                gainNode.connect(audioContext.destination);
+            } catch (e) {
+                console.log('Web Audio API не поддерживается');
+            }
+        }
+
+        function startMusic() {
+            if (!audioContext) initAudio();
+            if (!audioContext) return;
+            if (isMusicPlaying) return;
+            
+            if (audioContext.state === 'suspended') {
+                audioContext.resume();
+            }
+            
+            // Восточная мелодия: комбинация частот
+            oscillator1 = audioContext.createOscillator();
+            oscillator2 = audioContext.createOscillator();
+            oscillator3 = audioContext.createOscillator();
+            
+            oscillator1.type = 'sine';
+            oscillator1.frequency.value = 220; // Ля
+            
+            oscillator2.type = 'sine';
+            oscillator2.frequency.value = 277.18; // До-диез (восточный лад)
+            
+            oscillator3.type = 'triangle';
+            oscillator3.frequency.value = 329.63; // Ми
+            
+            // Добавляем вибрато для восточного звучания
+            vibrato = audioContext.createOscillator();
+            vibrato.frequency.value = 5;
+            const vibratoGain = audioContext.createGain();
+            vibratoGain.gain.value = 2;
+            vibrato.connect(vibratoGain);
+            vibratoGain.connect(oscillator1.frequency);
+            
+            oscillator1.connect(gainNode);
+            oscillator2.connect(gainNode);
+            oscillator3.connect(gainNode);
+            
+            gainNode.gain.value = 0.15; // 15% громкости
+            
+            oscillator1.start();
+            oscillator2.start();
+            oscillator3.start();
+            vibrato.start();
+            
+            isMusicPlaying = true;
+        }
+
+        function stopMusic() {
+            if (oscillator1) oscillator1.stop();
+            if (oscillator2) oscillator2.stop();
+            if (oscillator3) oscillator3.stop();
+            if (vibrato) vibrato.stop();
+            isMusicPlaying = false;
+            
+            if (audioContext) {
+                audioContext.suspend();
+            }
+        }
+
         musicToggle.addEventListener('click', () => {
-            if (isMusicMuted) {
-                musicAudio.play().catch(e => console.log('Музыка не может быть воспроизведена автоматически'));
-                musicToggle.textContent = '🔊';
-                musicToggle.classList.remove('muted');
-            } else {
-                musicAudio.pause();
-                musicAudio.currentTime = 0;
+            if (isMusicPlaying) {
+                stopMusic();
                 musicToggle.textContent = '🎵';
                 musicToggle.classList.add('muted');
+            } else {
+                startMusic();
+                musicToggle.textContent = '🔊';
+                musicToggle.classList.remove('muted');
             }
-            isMusicMuted = !isMusicMuted;
         });
 
-        // ========== 4. СЕКРЕТНОЕ СООБЩЕНИЕ (клик на луну) ==========
+        document.addEventListener('click', function init() {
+            initAudio();
+            document.removeEventListener('click', init);
+        }, { once: true });
+
+        // ========== 4. СЕКРЕТНОЕ СООБЩЕНИЕ ==========
         let clickCount = 0;
         preloaderMoon.addEventListener('click', () => {
             clickCount++;
@@ -849,9 +916,9 @@
             }
         });
 
-        // ========== 5. ПОГОДА ЧЕРЕЗ OPENWEATHERMAP API ==========
+        // ========== 5. ПОГОДА ЧЕРЕЗ OPENWEATHERMAP ==========
         async function fetchWeather() {
-            const apiKey = '7447b5fcc62fd8a92ca23a07eda52782'; // Твой API ключ
+            const apiKey = '7447b5fcc62fd8a92ca23a07eda52782';
             const city = 'Kazan';
             const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric&lang=ru`;
             
@@ -864,43 +931,44 @@
                     const description = data.weather[0].description;
                     const wind = Math.round(data.wind.speed);
                     
-                    // Делаем первую букву заглавной
                     const descCapitalized = description.charAt(0).toUpperCase() + description.slice(1);
-                    
                     document.getElementById('weatherDisplay').textContent = 
                         `${descCapitalized}, ${temp}°C · Ветер ${wind} м/с`;
                 } else {
                     document.getElementById('weatherDisplay').textContent = 'Ясно, 4°C · Лёгкий ветер';
                 }
             } catch (error) {
-                console.log('Ошибка загрузки погоды:', error);
+                console.log('Ошибка погоды:', error);
                 document.getElementById('weatherDisplay').textContent = 'Ясно, 4°C · Лёгкий ветер';
             }
         }
+        fetchWeather();
+        setInterval(fetchWeather, 600000);
 
-        // ========== 6. ПРОГРЕСС-БАР РАМАДАНА (29 дней) ==========
+        // ========== 6. ПРОГРЕСС РАМАДАНА ==========
         function updateRamadanProgress() {
             const today = new Date();
-            const startOfRamadan = new Date(2026, 1, 19); // 19 февраля 2026
-            const endOfRamadan = new Date(2026, 2, 19); // 19 марта 2026
-            const totalDays = 29; // В этом году 29 дней
+            const start = new Date(2026, 1, 19);
+            const end = new Date(2026, 2, 19);
+            const total = 29;
             
-            if (today < startOfRamadan) {
+            if (today < start) {
                 document.getElementById('ramadanDaysText').textContent = 'Рамадан скоро';
                 document.getElementById('ramadanProgressFill').style.width = '0%';
-            } else if (today > endOfRamadan) {
+            } else if (today > end) {
                 document.getElementById('ramadanDaysText').textContent = 'Рамадан завершён';
                 document.getElementById('ramadanProgressFill').style.width = '100%';
             } else {
-                const daysPassed = Math.floor((today - startOfRamadan) / (1000 * 60 * 60 * 24)) + 1;
-                const percent = (daysPassed / totalDays) * 100;
+                const passed = Math.floor((today - start) / (1000 * 60 * 60 * 24)) + 1;
+                const percent = (passed / total) * 100;
                 document.getElementById('ramadanProgressFill').style.width = `${percent}%`;
-                document.getElementById('ramadanDaysText').textContent = `день ${daysPassed}/${totalDays}`;
+                document.getElementById('ramadanDaysText').textContent = `день ${passed}/${total}`;
             }
         }
         updateRamadanProgress();
+        setInterval(updateRamadanProgress, 3600000);
 
-        // ========== 7. ОСНОВНАЯ ЛОГИКА НАМАЗОВ ==========
+        // ========== 7. ОСНОВНАЯ ЛОГИКА ==========
         window.addEventListener('load', () => {
             setTimeout(() => {
                 preloader.classList.add('hidden');
@@ -915,9 +983,7 @@
             const month = String(today.getMonth() + 1).padStart(2, '0');
             const year = today.getFullYear();
             const todayStr = `${day}.${month}.${year}`;
-            
-            const found = PRAYER_DATA.find(item => item.date === todayStr);
-            return found || PRAYER_DATA.find(item => item.date === "14.03.2026");
+            return PRAYER_DATA.find(item => item.date === todayStr) || PRAYER_DATA.find(item => item.date === "14.03.2026");
         }
 
         function displayTodayPrayers() {
@@ -932,10 +998,7 @@
             PRAYER_KEYS.forEach(p => {
                 const item = document.createElement('div');
                 item.className = 'prayer-item';
-                item.innerHTML = `
-                    <div class="prayer-name">${p.name}</div>
-                    <div class="prayer-time">${data[p.key]}</div>
-                `;
+                item.innerHTML = `<div class="prayer-name">${p.name}</div><div class="prayer-time">${data[p.key]}</div>`;
                 prayerGrid.appendChild(item);
             });
         }
@@ -946,14 +1009,11 @@
             if (!data) return { name: "Фаджр", time: "04:00" };
 
             const now = new Date();
-            const currentTotal = now.getHours() * 60 + now.getMinutes();
+            const current = now.getHours() * 60 + now.getMinutes();
 
             for (let p of PRAYER_KEYS) {
-                const [hours, minutes] = data[p.key].split(':').map(Number);
-                const prayerTotal = hours * 60 + minutes;
-                if (prayerTotal > currentTotal) {
-                    return { name: p.name, time: data[p.key] };
-                }
+                const [h, m] = data[p.key].split(':').map(Number);
+                if ((h * 60 + m) > current) return { name: p.name, time: data[p.key] };
             }
             return { name: "Фаджр", time: data.fajr };
         }
@@ -963,62 +1023,49 @@
             nextPrayerName.textContent = `Следующий: ${next.name}`;
 
             const now = new Date();
-            const [hours, minutes] = next.time.split(':').map(Number);
+            const [h, m] = next.time.split(':').map(Number);
             const target = new Date(now);
-            target.setHours(hours, minutes, 0, 0);
-
-            if (target <= now) {
-                target.setDate(target.getDate() + 1);
-            }
+            target.setHours(h, m, 0, 0);
+            if (target <= now) target.setDate(target.getDate() + 1);
 
             function tick() {
-                const now = new Date();
-                let diff = target - now;
-
+                const diff = target - new Date();
                 if (diff <= 0) {
                     const newNext = getNextPrayer();
                     nextPrayerName.textContent = `Следующий: ${newNext.name}`;
                     const [h, m] = newNext.time.split(':').map(Number);
                     target.setHours(h, m, 0, 0);
-                    if (target <= now) target.setDate(target.getDate() + 1);
-                    diff = target - now;
+                    if (target <= new Date()) target.setDate(target.getDate() + 1);
                 }
-
-                const hoursLeft = Math.floor(diff / (1000 * 60 * 60));
-                const minutesLeft = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-                const secondsLeft = Math.floor((diff % (1000 * 60)) / 1000);
-
-                nextPrayerTimer.textContent = `${String(hoursLeft).padStart(2, '0')}:${String(minutesLeft).padStart(2, '0')}:${String(secondsLeft).padStart(2, '0')}`;
+                
+                const hours = Math.floor(diff / 3600000);
+                const minutes = Math.floor((diff % 3600000) / 60000);
+                const seconds = Math.floor((diff % 60000) / 1000);
+                nextPrayerTimer.textContent = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
             }
-
             tick();
             setInterval(tick, 1000);
         }
 
         function updateIftarCountdown() {
-            const targetDate = new Date(2026, 2, 14, 17, 45, 0);
-
+            const target = new Date(2026, 2, 14, 17, 45, 0);
             function tick() {
-                const now = new Date();
-                const diff = targetDate - now;
-
+                const diff = target - new Date();
                 if (diff <= 0) {
                     iftarCountdown.textContent = "Ифтар сегодня";
                     return;
                 }
-
-                const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-                const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-                const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-
+                const days = Math.floor(diff / 86400000);
+                const hours = Math.floor((diff % 86400000) / 3600000);
+                const minutes = Math.floor((diff % 3600000) / 60000);
+                const seconds = Math.floor((diff % 60000) / 1000);
+                
                 if (days > 0) {
                     iftarCountdown.textContent = `${days}д ${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
                 } else {
                     iftarCountdown.textContent = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
                 }
             }
-
             tick();
             setInterval(tick, 1000);
         }
@@ -1027,22 +1074,15 @@
             const next = getNextPrayer().name;
             document.querySelectorAll('.prayer-item').forEach(item => {
                 const name = item.querySelector('.prayer-name').textContent;
-                if (name === next) {
-                    item.classList.add('next-prayer');
-                } else {
-                    item.classList.remove('next-prayer');
-                }
+                if (name === next) item.classList.add('next-prayer');
+                else item.classList.remove('next-prayer');
             });
         }
 
-        // Запуск
-        fetchWeather();
         updateNextPrayerTimer();
         updateIftarCountdown();
         highlightNextPrayer();
         setInterval(highlightNextPrayer, 60000);
-        setInterval(updateRamadanProgress, 3600000); // обновление прогресса каждый час
-        setInterval(fetchWeather, 600000); // обновление погоды каждые 10 минут
     </script>
 </body>
 </html>
