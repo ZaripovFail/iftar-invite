@@ -341,10 +341,10 @@
         }
 
         .card {
-            background: rgba(255, 240, 225, 0.7);
+            background: rgba(235, 215, 190, 0.8);
             border-radius: 24px;
             padding: 28px 25px;
-            border: 1px solid rgba(197, 165, 114, 0.3);
+            border: 1px solid rgba(197, 165, 114, 0.4);
             box-shadow: 0 15px 25px -10px rgba(0, 0, 0, 0.1);
             transition: all 0.3s ease;
             text-align: center;
@@ -353,9 +353,14 @@
             align-items: center;
         }
 
+        body.night-theme .card {
+            background: rgba(10, 15, 20, 0.7);
+            border: 1px solid rgba(197, 165, 114, 0.25);
+        }
+
         .card:hover {
             border-color: #c5a572;
-            box-shadow: 0 0 30px rgba(197, 165, 114, 0.2);
+            box-shadow: 0 0 30px rgba(197, 165, 114, 0.3);
             transform: translateY(-2px);
         }
 
@@ -363,10 +368,14 @@
             font-size: 0.9rem;
             text-transform: uppercase;
             letter-spacing: 0.2em;
-            color: #8a7a6a;
+            color: #7a6a5a;
             margin-bottom: 15px;
             font-weight: 400;
             width: 100%;
+        }
+
+        body.night-theme .card-title {
+            color: #a89f92;
         }
 
         .card-value {
@@ -384,15 +393,24 @@
             font-weight: 600;
         }
 
+        body.night-theme .card-value {
+            color: #e4dcd0;
+        }
+
         body.night-theme .card-value span {
             color: #c5a572;
         }
 
         .prayer-section {
             margin-bottom: 40px;
-            border-top: 1px solid rgba(197, 165, 114, 0.3);
-            border-bottom: 1px solid rgba(197, 165, 114, 0.3);
+            border-top: 1px solid rgba(197, 165, 114, 0.4);
+            border-bottom: 1px solid rgba(197, 165, 114, 0.4);
             padding: 30px 0;
+        }
+
+        body.night-theme .prayer-section {
+            border-top: 1px solid rgba(197, 165, 114, 0.2);
+            border-bottom: 1px solid rgba(197, 165, 114, 0.2);
         }
 
         .prayer-header {
@@ -417,12 +435,18 @@
 
         .date-indicator {
             font-size: 1rem;
-            color: #8a7a6a;
+            color: #7a6a5a;
             letter-spacing: 0.05em;
-            background: rgba(197, 165, 114, 0.1);
+            background: rgba(197, 165, 114, 0.15);
             padding: 8px 20px;
             border-radius: 40px;
-            border: 1px solid rgba(197, 165, 114, 0.3);
+            border: 1px solid rgba(197, 165, 114, 0.4);
+        }
+
+        body.night-theme .date-indicator {
+            color: #a89f92;
+            background: rgba(197, 165, 114, 0.1);
+            border: 1px solid rgba(197, 165, 114, 0.2);
         }
 
         .prayer-grid {
@@ -434,26 +458,32 @@
         .prayer-item {
             text-align: center;
             padding: 18px 8px;
-            background: rgba(255, 240, 225, 0.5);
+            background: rgba(225, 200, 170, 0.7);
             border-radius: 16px;
             transition: all 0.2s;
-            border: 1px solid transparent;
+            border: 1px solid rgba(197, 165, 114, 0.3);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
         }
 
         body.night-theme .prayer-item {
             background: rgba(10, 15, 20, 0.6);
+            border: 1px solid transparent;
         }
 
         .prayer-item.next-prayer {
             border-color: #c5a572;
-            background: rgba(197, 165, 114, 0.15);
-            box-shadow: 0 0 15px rgba(197, 165, 114, 0.2);
+            background: rgba(197, 165, 114, 0.25);
+            box-shadow: 0 0 15px rgba(197, 165, 114, 0.3);
+        }
+
+        body.night-theme .prayer-item.next-prayer {
+            background: rgba(197, 165, 114, 0.08);
         }
 
         .prayer-name {
             font-size: 0.9rem;
-            font-weight: 400;
-            color: #b48b5a;
+            font-weight: 500;
+            color: #8a6a4a;
             margin-bottom: 8px;
             letter-spacing: 0.1em;
             text-transform: uppercase;
@@ -465,9 +495,9 @@
 
         .prayer-time {
             font-size: 1.3rem;
-            color: #3a4a5a;
+            color: #2a3a4a;
             font-family: 'Cormorant Garamond', serif;
-            font-weight: 500;
+            font-weight: 600;
         }
 
         body.night-theme .prayer-time {
@@ -482,10 +512,10 @@
         }
 
         .countdown-box {
-            background: rgba(255, 240, 225, 0.7);
+            background: rgba(235, 215, 190, 0.8);
             border-radius: 24px;
             padding: 28px 20px;
-            border: 1px solid rgba(197, 165, 114, 0.3);
+            border: 1px solid rgba(197, 165, 114, 0.4);
             text-align: center;
             transition: all 0.3s;
             position: relative;
@@ -494,18 +524,19 @@
 
         body.night-theme .countdown-box {
             background: rgba(10, 15, 20, 0.7);
+            border: 1px solid rgba(197, 165, 114, 0.25);
         }
 
         .countdown-box:hover {
             border-color: #c5a572;
-            box-shadow: 0 0 20px rgba(197, 165, 114, 0.2);
+            box-shadow: 0 0 30px rgba(197, 165, 114, 0.3);
         }
 
         .countdown-label {
             font-size: 0.85rem;
             text-transform: uppercase;
             letter-spacing: 0.2em;
-            color: #8a7a6a;
+            color: #7a6a5a;
             margin-bottom: 15px;
         }
 
@@ -529,7 +560,7 @@
 
         .countdown-note {
             font-size: 0.8rem;
-            color: #8a7a6a;
+            color: #7a6a5a;
             letter-spacing: 0.05em;
         }
 
@@ -537,7 +568,7 @@
             color: #7a7167;
         }
 
-        /* Анимированный счётчик заката */
+        /* Анимированная полоска заката (без иконки) */
         .sunset-progress {
             position: absolute;
             bottom: 0;
@@ -546,15 +577,6 @@
             background: linear-gradient(90deg, #ffaa33, #ff6b35, #8b3a3a);
             transition: width 0.5s ease;
             border-radius: 0 2px 2px 0;
-        }
-
-        .sun-icon {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            font-size: 1.2rem;
-            opacity: 0.7;
-            transition: all 0.5s;
         }
 
         .hadith-section {
@@ -579,7 +601,7 @@
 
         .hadith-author {
             font-size: 0.9rem;
-            color: #8a7a6a;
+            color: #7a6a5a;
             margin-top: 12px;
             letter-spacing: 0.05em;
         }
@@ -590,10 +612,10 @@
 
         /* Рамадан бокс */
         .ramadan-box {
-            background: rgba(255, 240, 225, 0.7);
+            background: rgba(235, 215, 190, 0.8);
             border-radius: 24px;
             padding: 25px 25px;
-            border: 1px solid rgba(197, 165, 114, 0.3);
+            border: 1px solid rgba(197, 165, 114, 0.4);
             margin: 0 0 15px 0;
             text-align: center;
             max-width: 400px;
@@ -604,18 +626,19 @@
 
         body.night-theme .ramadan-box {
             background: rgba(10, 15, 20, 0.7);
+            border: 1px solid rgba(197, 165, 114, 0.25);
         }
 
         .ramadan-box:hover {
             border-color: #c5a572;
-            box-shadow: 0 0 20px rgba(197, 165, 114, 0.15);
+            box-shadow: 0 0 20px rgba(197, 165, 114, 0.2);
         }
 
         .ramadan-label {
             font-size: 0.9rem;
             text-transform: uppercase;
             letter-spacing: 0.2em;
-            color: #8a7a6a;
+            color: #7a6a5a;
             margin-bottom: 15px;
         }
 
@@ -665,7 +688,7 @@
             text-align: center;
             margin-top: 25px;
             font-size: 0.9rem;
-            color: #8a7a6a;
+            color: #7a6a5a;
             min-height: 30px;
             letter-spacing: 0.05em;
         }
@@ -755,7 +778,7 @@
                 <div class="card">
                     <div class="card-title">Время ифтара</div>
                     <div class="card-value"><span>17:45</span></div>
-                    <div style="color: #8a7a6a; font-size: 0.9rem; margin-bottom: 8px;" id="maghribDate">Магриб · 14 марта 2026</div>
+                    <div style="color: #7a6a5a; font-size: 0.9rem; margin-bottom: 8px;" id="maghribDate">Магриб · 14 марта 2026</div>
                     <div id="weatherDisplay" style="color: #b48b5a; font-size: 1rem; letter-spacing: 0.02em;">Загрузка погоды...</div>
                 </div>
             </div>
@@ -781,7 +804,6 @@
                     <div class="countdown-timer" id="iftarCountdown">--:--:--</div>
                     <div class="countdown-note" id="iftarNote">14 марта 2026 · 17:45</div>
                     <div class="sunset-progress" id="sunsetProgress" style="width: 0%;"></div>
-                    <div class="sun-icon" id="sunIcon">☀️</div>
                 </div>
             </div>
 
@@ -860,11 +882,9 @@
         const iftarNote = document.getElementById('iftarNote');
         const maghribDate = document.getElementById('maghribDate');
         const sunsetProgress = document.getElementById('sunsetProgress');
-        const sunIcon = document.getElementById('sunIcon');
         const themeToggle = document.getElementById('themeToggle');
         const preloaderMoon = document.getElementById('preloaderMoon');
         const secretMessage = document.getElementById('secretMessage');
-        const particles = document.getElementById('particles');
 
         // ========== 1. ПЕРЕКЛЮЧЕНИЕ ТЕМЫ ==========
         themeToggle.addEventListener('click', () => {
@@ -1039,8 +1059,6 @@
                 if (diff <= 0) {
                     iftarCountdown.textContent = "Ифтар сейчас!";
                     sunsetProgress.style.width = '100%';
-                    sunIcon.style.transform = 'rotate(180deg)';
-                    sunIcon.style.opacity = '0.3';
                     return;
                 }
 
@@ -1057,11 +1075,6 @@
                 }
                 
                 sunsetProgress.style.width = `${progress}%`;
-                
-                // Меняем иконку солнца
-                if (progress < 30) sunIcon.textContent = '☀️';
-                else if (progress < 70) sunIcon.textContent = '🌤';
-                else sunIcon.textContent = '🌅';
 
                 const hours = Math.floor(diff / 3600000);
                 const minutes = Math.floor((diff % 3600000) / 60000);
