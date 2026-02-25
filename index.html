@@ -568,7 +568,7 @@
             color: #7a7167;
         }
 
-        /* Анимированная полоска заката (без иконки) */
+        /* Анимированная полоска заката */
         .sunset-progress {
             position: absolute;
             bottom: 0;
@@ -682,6 +682,33 @@
 
         body.night-theme .ramadan-days {
             color: #c5a572;
+        }
+
+        /* Блок с адресом */
+        .address-box {
+            background: rgba(235, 215, 190, 0.8);
+            border-radius: 24px;
+            padding: 30px 30px;
+            border: 1px solid rgba(197, 165, 114, 0.4);
+            max-width: 550px;
+            margin: 0 auto;
+            transition: all 0.3s;
+        }
+
+        .address-box:hover {
+            border-color: #c5a572;
+            box-shadow: 0 0 30px rgba(197, 165, 114, 0.2);
+        }
+
+        body.night-theme .address-box {
+            background: rgba(10, 15, 20, 0.7);
+            border: 1px solid rgba(197, 165, 114, 0.25);
+        }
+
+        .address-link:hover {
+            background: rgba(197, 165, 114, 0.3) !important;
+            border-color: #c5a572 !important;
+            transform: translateY(-2px);
         }
 
         .footer-note {
@@ -821,6 +848,29 @@
                         <div class="ramadan-progress-fill" id="ramadanProgressFill" style="width: 17%;"></div>
                     </div>
                     <div class="ramadan-days" id="ramadanDaysText">день 5/29</div>
+                </div>
+            </div>
+
+            <!-- Блок с адресом (исправлено: "наша квартира" вместо "наш дом") -->
+            <div style="text-align: center; margin-top: 40px;">
+                <div style="color: #7a6a5a; font-size: 1rem; letter-spacing: 0.05em; margin-bottom: 15px; font-style: italic;">
+                    «Место встречи остаётся неизменным — наша квартира,<br>где мы всегда рады разделить с вами этот благословенный вечер»
+                </div>
+                
+                <div class="address-box">
+                    <div style="font-size: 1.2rem; color: #b48b5a; margin-bottom: 15px; font-family: 'Cormorant Garamond', serif;">
+                        с. Высокая Гора, ул. Рождественская, д. 6, кв. 28
+                    </div>
+                    
+                    <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+                        <a href="https://yandex.com/maps/-/CPezaC4A" target="_blank" class="address-link" style="background: rgba(197, 165, 114, 0.15); padding: 12px 25px; border-radius: 40px; text-decoration: none; color: #b48b5a; border: 1px solid rgba(197, 165, 114, 0.3); transition: all 0.3s; font-size: 0.95rem; letter-spacing: 0.05em;">Яндекс Карты</a>
+                        
+                        <a href="https://go.2gis.com/aOgx7" target="_blank" class="address-link" style="background: rgba(197, 165, 114, 0.15); padding: 12px 25px; border-radius: 40px; text-decoration: none; color: #b48b5a; border: 1px solid rgba(197, 165, 114, 0.3); transition: all 0.3s; font-size: 0.95rem; letter-spacing: 0.05em;">2ГИС</a>
+                    </div>
+                    
+                    <div style="color: #7a6a5a; font-size: 0.85rem; margin-top: 15px; letter-spacing: 0.03em;">
+                        * Нажмите на карту, чтобы построить маршрут
+                    </div>
                 </div>
             </div>
             
@@ -1063,7 +1113,6 @@
                 }
 
                 // Обновляем прогресс заката
-                const totalDay = 24 * 60 * 60 * 1000;
                 const timeSinceMidnight = now - new Date(now).setHours(0,0,0,0);
                 const sunsetTime = target - new Date(target).setHours(0,0,0,0);
                 
