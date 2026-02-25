@@ -21,55 +21,80 @@
         body {
             font-family: 'Montserrat', sans-serif;
             font-weight: 300;
-            background: #0b1015;
             min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
             padding: 20px;
-            color: #e4dcd0;
+            color: #2c3e4f;
             line-height: 1.6;
             position: relative;
             overflow-x: hidden;
-            transition: background 0.5s ease;
+            transition: background 0.8s ease, color 0.3s ease;
+        }
+
+        /* Вечерний режим (по умолчанию) */
+        body {
+            background: linear-gradient(145deg, #f9e6cf 0%, #f5d8b3 40%, #e8c1a0 100%);
+            color: #3a4a5a;
         }
 
         body.night-theme {
-            background: #03060a;
+            background: linear-gradient(145deg, #0f1a24 0%, #1a2c38 50%, #2a3f4a 100%);
+            color: #e4dcd0;
         }
 
         body.night-theme .container {
-            background: rgba(5, 10, 15, 0.9);
+            background: rgba(18, 24, 30, 0.85);
+            border: 1px solid rgba(197, 165, 114, 0.25);
         }
 
-        body.night-theme .preloader {
-            background: linear-gradient(145deg, #0f151a 0%, #1a2128 100%);
+        body.night-theme .card {
+            background: rgba(10, 15, 20, 0.7);
         }
 
-        /* Плавающие частицы */
-        .particles {
+        body.night-theme .card-value {
+            color: #e4dcd0;
+        }
+
+        body.night-theme .invitation-text {
+            color: #d4c9bc;
+        }
+
+        /* Восточные узоры по краям */
+        .pattern-left, .pattern-right {
             position: fixed;
             top: 0;
-            left: 0;
-            width: 100%;
+            width: 80px;
             height: 100%;
             pointer-events: none;
-            z-index: 1;
+            z-index: 5;
+            opacity: 0.15;
+            transition: opacity 0.5s;
         }
 
-        .particle {
-            position: absolute;
-            width: 4px;
-            height: 4px;
-            background: rgba(197, 165, 114, 0.4);
-            border-radius: 50%;
-            box-shadow: 0 0 10px #c5a572;
-            animation: floatParticle 15s infinite linear;
+        .pattern-left {
+            left: 0;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 800" fill="%23c5a572"><path d="M50 20 L55 40 L75 40 L60 55 L65 75 L50 65 L35 75 L40 55 L25 40 L45 40 Z" transform="translate(0,0) scale(0.8)"/><path d="M50 120 L55 140 L75 140 L60 155 L65 175 L50 165 L35 175 L40 155 L25 140 L45 140 Z" transform="translate(0,100) scale(0.8)"/><path d="M50 220 L55 240 L75 240 L60 255 L65 275 L50 265 L35 275 L40 255 L25 240 L45 240 Z" transform="translate(0,200) scale(0.8)"/><path d="M50 320 L55 340 L75 340 L60 355 L65 375 L50 365 L35 375 L40 355 L25 340 L45 340 Z" transform="translate(0,300) scale(0.8)"/><path d="M50 420 L55 440 L75 440 L60 455 L65 475 L50 465 L35 475 L40 455 L25 440 L45 440 Z" transform="translate(0,400) scale(0.8)"/><path d="M50 520 L55 540 L75 540 L60 555 L65 575 L50 565 L35 575 L40 555 L25 540 L45 540 Z" transform="translate(0,500) scale(0.8)"/><path d="M50 620 L55 640 L75 640 L60 655 L65 675 L50 665 L35 675 L40 655 L25 640 L45 640 Z" transform="translate(0,600) scale(0.8)"/><path d="M50 720 L55 740 L75 740 L60 755 L65 775 L50 765 L35 775 L40 755 L25 740 L45 740 Z" transform="translate(0,700) scale(0.8)"/></svg>') repeat-y left top;
+            background-size: 60px auto;
+            animation: scrollPattern 40s linear infinite;
         }
 
-        @keyframes floatParticle {
-            from { transform: translateY(100vh) rotate(0deg); }
-            to { transform: translateY(-100vh) rotate(360deg); }
+        .pattern-right {
+            right: 0;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 800" fill="%23c5a572"><path d="M50 20 L55 40 L75 40 L60 55 L65 75 L50 65 L35 75 L40 55 L25 40 L45 40 Z" transform="translate(0,0) scale(0.8)"/><path d="M50 120 L55 140 L75 140 L60 155 L65 175 L50 165 L35 175 L40 155 L25 140 L45 140 Z" transform="translate(0,100) scale(0.8)"/><path d="M50 220 L55 240 L75 240 L60 255 L65 275 L50 265 L35 275 L40 255 L25 240 L45 240 Z" transform="translate(0,200) scale(0.8)"/><path d="M50 320 L55 340 L75 340 L60 355 L65 375 L50 365 L35 375 L40 355 L25 340 L45 340 Z" transform="translate(0,300) scale(0.8)"/><path d="M50 420 L55 440 L75 440 L60 455 L65 475 L50 465 L35 475 L40 455 L25 440 L45 440 Z" transform="translate(0,400) scale(0.8)"/><path d="M50 520 L55 540 L75 540 L60 555 L65 575 L50 565 L35 575 L40 555 L25 540 L45 540 Z" transform="translate(0,500) scale(0.8)"/><path d="M50 620 L55 640 L75 640 L60 655 L65 675 L50 665 L35 675 L40 655 L25 640 L45 640 Z" transform="translate(0,600) scale(0.8)"/><path d="M50 720 L55 740 L75 740 L60 755 L65 775 L50 765 L35 775 L40 755 L25 740 L45 740 Z" transform="translate(0,700) scale(0.8)"/></svg>') repeat-y right top;
+            background-size: 60px auto;
+            animation: scrollPattern 40s linear infinite reverse;
+        }
+
+        @keyframes scrollPattern {
+            from { background-position: 0 0; }
+            to { background-position: 0 800px; }
+        }
+
+        body.night-theme .pattern-left,
+        body.night-theme .pattern-right {
+            opacity: 0.1;
         }
 
         /* Кнопка переключения темы */
@@ -78,7 +103,7 @@
             top: 20px;
             right: 20px;
             z-index: 100;
-            background: rgba(197, 165, 114, 0.2);
+            background: rgba(197, 165, 114, 0.3);
             backdrop-filter: blur(10px);
             border: 1px solid #c5a572;
             color: #c5a572;
@@ -94,54 +119,23 @@
         }
 
         .theme-toggle:hover {
-            background: rgba(197, 165, 114, 0.4);
+            background: rgba(197, 165, 114, 0.5);
             transform: scale(1.1);
         }
 
-        /* Кнопка музыки */
-        .music-toggle {
-            position: fixed;
-            top: 20px;
-            left: 20px;
-            z-index: 100;
-            background: rgba(197, 165, 114, 0.2);
-            backdrop-filter: blur(10px);
-            border: 1px solid #c5a572;
-            color: #c5a572;
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            font-size: 1.5rem;
-            transition: all 0.3s;
-        }
-
-        .music-toggle:hover {
-            background: rgba(197, 165, 114, 0.4);
-            transform: scale(1.1);
-        }
-
-        .music-toggle.muted {
-            opacity: 0.5;
-        }
-
-        /* Прелоудер с закатным фоном */
+        /* Прелоудер */
         .preloader {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(145deg, #251d1a 0%, #3d2b23 40%, #734e3b 100%);
+            background: linear-gradient(145deg, #f9e6cf 0%, #f5d8b3 40%, #e8c1a0 100%);
             display: flex;
             justify-content: center;
             align-items: center;
             z-index: 9999;
-            transition: opacity 1.8s cubic-bezier(0.77, 0, 0.18, 1), visibility 1.8s ease;
-            overflow: hidden;
+            transition: opacity 1.8s ease, visibility 1.8s ease;
         }
 
         .preloader.hidden {
@@ -158,9 +152,9 @@
 
         .preloader-moon {
             font-size: 6rem;
-            color: #fff2d7;
+            color: #b48b5a;
             margin-bottom: 30px;
-            filter: drop-shadow(0 0 40px #ffcc80);
+            filter: drop-shadow(0 0 30px #c5a572);
             animation: float 4s infinite ease-in-out;
             display: inline-block;
             cursor: pointer;
@@ -173,8 +167,7 @@
             margin-bottom: 20px;
             font-weight: 400;
             text-transform: uppercase;
-            color: #fff2d7;
-            text-shadow: 0 0 20px rgba(255, 140, 60, 0.5);
+            color: #7a5a3a;
         }
 
         .preloader-date {
@@ -182,8 +175,16 @@
             font-size: 2.2rem;
             letter-spacing: 0.15em;
             font-weight: 300;
+            color: #7a5a3a;
+        }
+
+        body.night-theme .preloader-title,
+        body.night-theme .preloader-date {
             color: #fff2d7;
-            text-shadow: 0 0 20px rgba(255, 140, 60, 0.5);
+        }
+
+        body.night-theme .preloader-moon {
+            color: #fff2d7;
         }
 
         @keyframes fadeInScale {
@@ -202,12 +203,12 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            background: rgba(10, 15, 20, 0.95);
+            background: rgba(255, 245, 230, 0.95);
             backdrop-filter: blur(20px);
             padding: 30px 40px;
             border-radius: 32px;
             border: 2px solid #c5a572;
-            color: #fff2d7;
+            color: #4a3a2a;
             font-family: 'Cormorant Garamond', serif;
             font-size: 1.5rem;
             text-align: center;
@@ -228,6 +229,15 @@
             display: block;
             margin-top: 15px;
             font-size: 1rem;
+            color: #7a6a5a;
+        }
+
+        body.night-theme .secret-message {
+            background: rgba(10, 15, 20, 0.95);
+            color: #fff2d7;
+        }
+
+        body.night-theme .secret-message small {
             color: #a89f92;
         }
 
@@ -266,41 +276,16 @@
             background: linear-gradient(90deg, transparent, #c5a572, #c5a572, #c5a572, transparent);
         }
 
-        /* Анимированный узор */
-        .pattern-container {
-            position: absolute;
-            bottom: 20px;
-            right: 20px;
-            width: 100px;
-            height: 100px;
-            opacity: 0.2;
-            pointer-events: none;
-            animation: rotatePattern 60s linear infinite;
-        }
-
-        .pattern {
-            width: 100%;
-            height: 100%;
-            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="%23c5a572"><path d="M50 10 L55 30 L75 30 L60 45 L65 65 L50 55 L35 65 L40 45 L25 30 L45 30 Z"/></svg>');
-            background-size: contain;
-            opacity: 0.5;
-        }
-
-        @keyframes rotatePattern {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
-
         .container {
-            background: rgba(18, 24, 30, 0.85);
+            background: rgba(255, 245, 235, 0.7);
             backdrop-filter: blur(15px);
             -webkit-backdrop-filter: blur(15px);
             border-radius: 32px;
             padding: 55px 50px;
-            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.9), 0 1px 2px rgba(197, 165, 114, 0.2) inset;
-            border: 1px solid rgba(197, 165, 114, 0.25);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(197, 165, 114, 0.3) inset;
+            border: 1px solid rgba(197, 165, 114, 0.3);
             position: relative;
-            transition: background 0.5s ease;
+            transition: all 0.5s ease;
         }
 
         h1, h2, h3 {
@@ -312,11 +297,15 @@
         h1 {
             font-size: 3.2rem;
             text-align: center;
-            color: #c5a572;
+            color: #b48b5a;
             margin-bottom: 10px;
             font-weight: 600;
             text-transform: uppercase;
             letter-spacing: 0.12em;
+        }
+
+        body.night-theme h1 {
+            color: #c5a572;
         }
 
         .invitation-text {
@@ -325,7 +314,7 @@
             margin: 0 auto 45px auto;
             font-size: 1.15rem;
             line-height: 1.8;
-            color: #d4c9bc;
+            color: #5a4a3a;
             font-weight: 300;
             letter-spacing: 0.02em;
             padding: 0 15px;
@@ -336,8 +325,12 @@
         }
 
         .invitation-text .highlight {
-            color: #c5a572;
+            color: #b48b5a;
             font-weight: 400;
+        }
+
+        body.night-theme .invitation-text .highlight {
+            color: #c5a572;
         }
 
         .top-cards {
@@ -348,11 +341,11 @@
         }
 
         .card {
-            background: rgba(10, 15, 20, 0.7);
+            background: rgba(255, 240, 225, 0.7);
             border-radius: 24px;
             padding: 28px 25px;
-            border: 1px solid rgba(197, 165, 114, 0.25);
-            box-shadow: 0 15px 25px -10px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(197, 165, 114, 0.3);
+            box-shadow: 0 15px 25px -10px rgba(0, 0, 0, 0.1);
             transition: all 0.3s ease;
             text-align: center;
             display: flex;
@@ -362,7 +355,7 @@
 
         .card:hover {
             border-color: #c5a572;
-            box-shadow: 0 0 30px rgba(197, 165, 114, 0.3), 0 20px 30px -8px rgba(197, 165, 114, 0.15);
+            box-shadow: 0 0 30px rgba(197, 165, 114, 0.2);
             transform: translateY(-2px);
         }
 
@@ -370,7 +363,7 @@
             font-size: 0.9rem;
             text-transform: uppercase;
             letter-spacing: 0.2em;
-            color: #a89f92;
+            color: #8a7a6a;
             margin-bottom: 15px;
             font-weight: 400;
             width: 100%;
@@ -379,7 +372,7 @@
         .card-value {
             font-size: 2rem;
             font-weight: 400;
-            color: #e4dcd0;
+            color: #3a4a5a;
             margin-bottom: 15px;
             font-family: 'Cormorant Garamond', serif;
             line-height: 1.2;
@@ -387,14 +380,18 @@
         }
 
         .card-value span {
-            color: #c5a572;
+            color: #b48b5a;
             font-weight: 600;
+        }
+
+        body.night-theme .card-value span {
+            color: #c5a572;
         }
 
         .prayer-section {
             margin-bottom: 40px;
-            border-top: 1px solid rgba(197, 165, 114, 0.2);
-            border-bottom: 1px solid rgba(197, 165, 114, 0.2);
+            border-top: 1px solid rgba(197, 165, 114, 0.3);
+            border-bottom: 1px solid rgba(197, 165, 114, 0.3);
             padding: 30px 0;
         }
 
@@ -407,21 +404,25 @@
         }
 
         .prayer-header h2 {
-            color: #c5a572;
+            color: #b48b5a;
             font-size: 1.8rem;
             font-weight: 500;
             letter-spacing: 0.1em;
             margin: 0;
         }
 
+        body.night-theme .prayer-header h2 {
+            color: #c5a572;
+        }
+
         .date-indicator {
             font-size: 1rem;
-            color: #a89f92;
+            color: #8a7a6a;
             letter-spacing: 0.05em;
             background: rgba(197, 165, 114, 0.1);
             padding: 8px 20px;
             border-radius: 40px;
-            border: 1px solid rgba(197, 165, 114, 0.2);
+            border: 1px solid rgba(197, 165, 114, 0.3);
         }
 
         .prayer-grid {
@@ -433,32 +434,44 @@
         .prayer-item {
             text-align: center;
             padding: 18px 8px;
-            background: rgba(10, 15, 20, 0.6);
+            background: rgba(255, 240, 225, 0.5);
             border-radius: 16px;
             transition: all 0.2s;
             border: 1px solid transparent;
         }
 
+        body.night-theme .prayer-item {
+            background: rgba(10, 15, 20, 0.6);
+        }
+
         .prayer-item.next-prayer {
             border-color: #c5a572;
-            background: rgba(197, 165, 114, 0.08);
+            background: rgba(197, 165, 114, 0.15);
             box-shadow: 0 0 15px rgba(197, 165, 114, 0.2);
         }
 
         .prayer-name {
             font-size: 0.9rem;
             font-weight: 400;
-            color: #c5a572;
+            color: #b48b5a;
             margin-bottom: 8px;
             letter-spacing: 0.1em;
             text-transform: uppercase;
         }
 
+        body.night-theme .prayer-name {
+            color: #c5a572;
+        }
+
         .prayer-time {
             font-size: 1.3rem;
-            color: #e4dcd0;
+            color: #3a4a5a;
             font-family: 'Cormorant Garamond', serif;
             font-weight: 500;
+        }
+
+        body.night-theme .prayer-time {
+            color: #e4dcd0;
         }
 
         .countdown-container {
@@ -469,12 +482,18 @@
         }
 
         .countdown-box {
-            background: rgba(10, 15, 20, 0.7);
+            background: rgba(255, 240, 225, 0.7);
             border-radius: 24px;
             padding: 28px 20px;
-            border: 1px solid rgba(197, 165, 114, 0.25);
+            border: 1px solid rgba(197, 165, 114, 0.3);
             text-align: center;
             transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        body.night-theme .countdown-box {
+            background: rgba(10, 15, 20, 0.7);
         }
 
         .countdown-box:hover {
@@ -486,24 +505,56 @@
             font-size: 0.85rem;
             text-transform: uppercase;
             letter-spacing: 0.2em;
-            color: #a89f92;
+            color: #8a7a6a;
             margin-bottom: 15px;
+        }
+
+        body.night-theme .countdown-label {
+            color: #a89f92;
         }
 
         .countdown-timer {
             font-size: 2.5rem;
             font-weight: 400;
-            color: #c5a572;
+            color: #b48b5a;
             letter-spacing: 0.05em;
             font-family: 'Cormorant Garamond', serif;
             line-height: 1.2;
             margin-bottom: 8px;
         }
 
+        body.night-theme .countdown-timer {
+            color: #c5a572;
+        }
+
         .countdown-note {
             font-size: 0.8rem;
-            color: #7a7167;
+            color: #8a7a6a;
             letter-spacing: 0.05em;
+        }
+
+        body.night-theme .countdown-note {
+            color: #7a7167;
+        }
+
+        /* Анимированный счётчик заката */
+        .sunset-progress {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #ffaa33, #ff6b35, #8b3a3a);
+            transition: width 0.5s ease;
+            border-radius: 0 2px 2px 0;
+        }
+
+        .sun-icon {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 1.2rem;
+            opacity: 0.7;
+            transition: all 0.5s;
         }
 
         .hadith-section {
@@ -516,31 +567,43 @@
             font-family: 'Cormorant Garamond', serif;
             font-size: 1.2rem;
             font-style: italic;
-            color: #c5a572;
+            color: #b48b5a;
             line-height: 1.6;
             max-width: 700px;
             margin: 0 auto;
         }
 
+        body.night-theme .hadith-text {
+            color: #c5a572;
+        }
+
         .hadith-author {
             font-size: 0.9rem;
-            color: #7a7167;
+            color: #8a7a6a;
             margin-top: 12px;
             letter-spacing: 0.05em;
         }
 
-        /* Отдельное окошко для Рамадана (29 дней) */
+        body.night-theme .hadith-author {
+            color: #7a7167;
+        }
+
+        /* Рамадан бокс */
         .ramadan-box {
-            background: rgba(10, 15, 20, 0.7);
+            background: rgba(255, 240, 225, 0.7);
             border-radius: 24px;
             padding: 25px 25px;
-            border: 1px solid rgba(197, 165, 114, 0.25);
+            border: 1px solid rgba(197, 165, 114, 0.3);
             margin: 0 0 15px 0;
             text-align: center;
             max-width: 400px;
             margin-left: auto;
             margin-right: auto;
             transition: all 0.3s;
+        }
+
+        body.night-theme .ramadan-box {
+            background: rgba(10, 15, 20, 0.7);
         }
 
         .ramadan-box:hover {
@@ -552,8 +615,12 @@
             font-size: 0.9rem;
             text-transform: uppercase;
             letter-spacing: 0.2em;
-            color: #a89f92;
+            color: #8a7a6a;
             margin-bottom: 15px;
+        }
+
+        body.night-theme .ramadan-label {
+            color: #a89f92;
         }
 
         .ramadan-progress-container {
@@ -567,9 +634,13 @@
         .ramadan-progress-bar {
             width: 200px;
             height: 8px;
-            background: rgba(255,255,255,0.1);
+            background: rgba(0,0,0,0.1);
             border-radius: 4px;
             overflow: hidden;
+        }
+
+        body.night-theme .ramadan-progress-bar {
+            background: rgba(255,255,255,0.1);
         }
 
         .ramadan-progress-fill {
@@ -582,22 +653,33 @@
         .ramadan-days {
             font-family: 'Cormorant Garamond', serif;
             font-size: 1.2rem;
-            color: #c5a572;
+            color: #b48b5a;
             min-width: 100px;
+        }
+
+        body.night-theme .ramadan-days {
+            color: #c5a572;
         }
 
         .footer-note {
             text-align: center;
             margin-top: 25px;
             font-size: 0.9rem;
-            color: #a89f92;
+            color: #8a7a6a;
             min-height: 30px;
             letter-spacing: 0.05em;
+        }
+
+        body.night-theme .footer-note {
+            color: #a89f92;
         }
 
         @media (max-width: 800px) {
             .prayer-grid {
                 grid-template-columns: repeat(3, 1fr);
+            }
+            .pattern-left, .pattern-right {
+                width: 40px;
             }
         }
 
@@ -611,10 +693,8 @@
             .preloader-title { font-size: 1.8rem; }
             .preloader-date { font-size: 1.6rem; }
             .preloader-moon { font-size: 4rem; }
-            .theme-toggle, .music-toggle {
-                width: 40px;
-                height: 40px;
-                font-size: 1.2rem;
+            .pattern-left, .pattern-right {
+                display: none;
             }
         }
 
@@ -630,14 +710,12 @@
     </style>
 </head>
 <body>
-    <!-- Плавающие частицы -->
-    <div class="particles" id="particles"></div>
+    <!-- Восточные узоры по краям -->
+    <div class="pattern-left"></div>
+    <div class="pattern-right"></div>
 
     <!-- Кнопка переключения темы -->
     <div class="theme-toggle" id="themeToggle">🌓</div>
-
-    <!-- Кнопка музыки -->
-    <div class="music-toggle muted" id="musicToggle">🎵</div>
 
     <!-- Секретное сообщение -->
     <div class="secret-message" id="secretMessage">
@@ -646,7 +724,7 @@
         <small>спасибо, что вы есть</small>
     </div>
 
-    <!-- Прелоудер с закатным фоном -->
+    <!-- Прелоудер -->
     <div class="preloader" id="preloader">
         <div class="preloader-content">
             <div class="preloader-moon" id="preloaderMoon">☾</div>
@@ -659,11 +737,6 @@
     <div class="main-content" id="mainContent">
         <div class="container">
             <div class="ornament-top"></div>
-            
-            <!-- Анимированный узор -->
-            <div class="pattern-container">
-                <div class="pattern"></div>
-            </div>
             
             <h1>Дорогие друзья</h1>
             
@@ -682,8 +755,8 @@
                 <div class="card">
                     <div class="card-title">Время ифтара</div>
                     <div class="card-value"><span>17:45</span></div>
-                    <div style="color: #a89f92; font-size: 0.9rem; margin-bottom: 8px;">Магриб · 14 марта 2026</div>
-                    <div id="weatherDisplay" style="color: #c5a572; font-size: 1rem; letter-spacing: 0.02em;">Загрузка погоды...</div>
+                    <div style="color: #8a7a6a; font-size: 0.9rem; margin-bottom: 8px;" id="maghribDate">Магриб · 14 марта 2026</div>
+                    <div id="weatherDisplay" style="color: #b48b5a; font-size: 1rem; letter-spacing: 0.02em;">Загрузка погоды...</div>
                 </div>
             </div>
 
@@ -703,10 +776,12 @@
                     <div class="countdown-timer" id="nextPrayerTimer">--:--:--</div>
                     <div class="countdown-note" id="nextPrayerName"></div>
                 </div>
-                <div class="countdown-box">
+                <div class="countdown-box" id="iftarBox">
                     <div class="countdown-label">До ифтара</div>
                     <div class="countdown-timer" id="iftarCountdown">--:--:--</div>
-                    <div class="countdown-note">14 марта 2026 · 17:45</div>
+                    <div class="countdown-note" id="iftarNote">14 марта 2026 · 17:45</div>
+                    <div class="sunset-progress" id="sunsetProgress" style="width: 0%;"></div>
+                    <div class="sun-icon" id="sunIcon">☀️</div>
                 </div>
             </div>
 
@@ -716,7 +791,7 @@
                 <div class="hadith-author">(хадис от Ат-Тирмизи)</div>
             </div>
 
-            <!-- Отдельное окошко с прогрессом Рамадана (29 дней) -->
+            <!-- Отдельное окошко с прогрессом Рамадана -->
             <div class="ramadan-box">
                 <div class="ramadan-label">Рамадан 2026</div>
                 <div class="ramadan-progress-container">
@@ -782,128 +857,21 @@
         const nextPrayerTimer = document.getElementById('nextPrayerTimer');
         const nextPrayerName = document.getElementById('nextPrayerName');
         const iftarCountdown = document.getElementById('iftarCountdown');
+        const iftarNote = document.getElementById('iftarNote');
+        const maghribDate = document.getElementById('maghribDate');
+        const sunsetProgress = document.getElementById('sunsetProgress');
+        const sunIcon = document.getElementById('sunIcon');
         const themeToggle = document.getElementById('themeToggle');
-        const musicToggle = document.getElementById('musicToggle');
         const preloaderMoon = document.getElementById('preloaderMoon');
         const secretMessage = document.getElementById('secretMessage');
         const particles = document.getElementById('particles');
 
-        // ========== 1. ПЛАВАЮЩИЕ ЧАСТИЦЫ ==========
-        function createParticles(count = 30) {
-            for (let i = 0; i < count; i++) {
-                const particle = document.createElement('div');
-                particle.className = 'particle';
-                const size = Math.random() * 6 + 2;
-                particle.style.width = `${size}px`;
-                particle.style.height = `${size}px`;
-                particle.style.left = `${Math.random() * 100}%`;
-                particle.style.animationDuration = `${Math.random() * 20 + 15}s`;
-                particle.style.animationDelay = `${Math.random() * 5}s`;
-                particle.style.opacity = Math.random() * 0.5 + 0.2;
-                particles.appendChild(particle);
-            }
-        }
-        createParticles();
-
-        // ========== 2. ПЕРЕКЛЮЧЕНИЕ ТЕМЫ ==========
+        // ========== 1. ПЕРЕКЛЮЧЕНИЕ ТЕМЫ ==========
         themeToggle.addEventListener('click', () => {
             document.body.classList.toggle('night-theme');
         });
 
-        // ========== 3. МУЗЫКА ЧЕРЕЗ WEB AUDIO API ==========
-        let audioContext;
-        let isMusicPlaying = false;
-        let gainNode;
-        let oscillator1, oscillator2, oscillator3, vibrato;
-
-        function initAudio() {
-            if (audioContext) return;
-            
-            try {
-                audioContext = new (window.AudioContext || window.webkitAudioContext)();
-                gainNode = audioContext.createGain();
-                gainNode.gain.value = 0;
-                gainNode.connect(audioContext.destination);
-            } catch (e) {
-                console.log('Web Audio API не поддерживается');
-            }
-        }
-
-        function startMusic() {
-            if (!audioContext) initAudio();
-            if (!audioContext) return;
-            if (isMusicPlaying) return;
-            
-            if (audioContext.state === 'suspended') {
-                audioContext.resume();
-            }
-            
-            // Восточная мелодия: комбинация частот
-            oscillator1 = audioContext.createOscillator();
-            oscillator2 = audioContext.createOscillator();
-            oscillator3 = audioContext.createOscillator();
-            
-            oscillator1.type = 'sine';
-            oscillator1.frequency.value = 220; // Ля
-            
-            oscillator2.type = 'sine';
-            oscillator2.frequency.value = 277.18; // До-диез (восточный лад)
-            
-            oscillator3.type = 'triangle';
-            oscillator3.frequency.value = 329.63; // Ми
-            
-            // Добавляем вибрато для восточного звучания
-            vibrato = audioContext.createOscillator();
-            vibrato.frequency.value = 5;
-            const vibratoGain = audioContext.createGain();
-            vibratoGain.gain.value = 2;
-            vibrato.connect(vibratoGain);
-            vibratoGain.connect(oscillator1.frequency);
-            
-            oscillator1.connect(gainNode);
-            oscillator2.connect(gainNode);
-            oscillator3.connect(gainNode);
-            
-            gainNode.gain.value = 0.15; // 15% громкости
-            
-            oscillator1.start();
-            oscillator2.start();
-            oscillator3.start();
-            vibrato.start();
-            
-            isMusicPlaying = true;
-        }
-
-        function stopMusic() {
-            if (oscillator1) oscillator1.stop();
-            if (oscillator2) oscillator2.stop();
-            if (oscillator3) oscillator3.stop();
-            if (vibrato) vibrato.stop();
-            isMusicPlaying = false;
-            
-            if (audioContext) {
-                audioContext.suspend();
-            }
-        }
-
-        musicToggle.addEventListener('click', () => {
-            if (isMusicPlaying) {
-                stopMusic();
-                musicToggle.textContent = '🎵';
-                musicToggle.classList.add('muted');
-            } else {
-                startMusic();
-                musicToggle.textContent = '🔊';
-                musicToggle.classList.remove('muted');
-            }
-        });
-
-        document.addEventListener('click', function init() {
-            initAudio();
-            document.removeEventListener('click', init);
-        }, { once: true });
-
-        // ========== 4. СЕКРЕТНОЕ СООБЩЕНИЕ ==========
+        // ========== 2. СЕКРЕТНОЕ СООБЩЕНИЕ ==========
         let clickCount = 0;
         preloaderMoon.addEventListener('click', () => {
             clickCount++;
@@ -916,7 +884,7 @@
             }
         });
 
-        // ========== 5. ПОГОДА ЧЕРЕЗ OPENWEATHERMAP ==========
+        // ========== 3. ПОГОДА ЧЕРЕЗ OPENWEATHERMAP ==========
         async function fetchWeather() {
             const apiKey = '7447b5fcc62fd8a92ca23a07eda52782';
             const city = 'Kazan';
@@ -945,7 +913,7 @@
         fetchWeather();
         setInterval(fetchWeather, 600000);
 
-        // ========== 6. ПРОГРЕСС РАМАДАНА ==========
+        // ========== 4. ПРОГРЕСС РАМАДАНА ==========
         function updateRamadanProgress() {
             const today = new Date();
             const start = new Date(2026, 1, 19);
@@ -968,7 +936,7 @@
         updateRamadanProgress();
         setInterval(updateRamadanProgress, 3600000);
 
-        // ========== 7. ОСНОВНАЯ ЛОГИКА ==========
+        // ========== 5. ОСНОВНАЯ ЛОГИКА ==========
         window.addEventListener('load', () => {
             setTimeout(() => {
                 preloader.classList.add('hidden');
@@ -993,6 +961,10 @@
             const [day, month, year] = data.date.split('.');
             const months = ['января', 'февраля', 'марта', 'апреля', 'мая', 'июня', 'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря'];
             currentDateDisplay.textContent = `${parseInt(day)} ${months[parseInt(month)-1]} ${year}`;
+            
+            // Обновляем дату в карточке ифтара
+            maghribDate.textContent = `Магриб · ${parseInt(day)} ${months[parseInt(month)-1]} ${year}`;
+            iftarNote.textContent = `${parseInt(day)} ${months[parseInt(month)-1]} ${year} · ${data.maghrib}`;
 
             prayerGrid.innerHTML = '';
             PRAYER_KEYS.forEach(p => {
@@ -1048,22 +1020,57 @@
         }
 
         function updateIftarCountdown() {
-            const target = new Date(2026, 2, 14, 17, 45, 0);
+            const data = getTodayData();
+            if (!data) return;
+            
+            const [h, m] = data.maghrib.split(':').map(Number);
+            const target = new Date();
+            target.setHours(h, m, 0, 0);
+            
+            // Если время уже прошло, ставим на завтра
+            if (target < new Date()) {
+                target.setDate(target.getDate() + 1);
+            }
+
             function tick() {
-                const diff = target - new Date();
+                const now = new Date();
+                const diff = target - now;
+
                 if (diff <= 0) {
-                    iftarCountdown.textContent = "Ифтар сегодня";
+                    iftarCountdown.textContent = "Ифтар сейчас!";
+                    sunsetProgress.style.width = '100%';
+                    sunIcon.style.transform = 'rotate(180deg)';
+                    sunIcon.style.opacity = '0.3';
                     return;
                 }
-                const days = Math.floor(diff / 86400000);
-                const hours = Math.floor((diff % 86400000) / 3600000);
+
+                // Обновляем прогресс заката
+                const totalDay = 24 * 60 * 60 * 1000;
+                const timeSinceMidnight = now - new Date(now).setHours(0,0,0,0);
+                const sunsetTime = target - new Date(target).setHours(0,0,0,0);
+                
+                let progress = 0;
+                if (timeSinceMidnight < sunsetTime) {
+                    progress = (timeSinceMidnight / sunsetTime) * 100;
+                } else {
+                    progress = 100;
+                }
+                
+                sunsetProgress.style.width = `${progress}%`;
+                
+                // Меняем иконку солнца
+                if (progress < 30) sunIcon.textContent = '☀️';
+                else if (progress < 70) sunIcon.textContent = '🌤';
+                else sunIcon.textContent = '🌅';
+
+                const hours = Math.floor(diff / 3600000);
                 const minutes = Math.floor((diff % 3600000) / 60000);
                 const seconds = Math.floor((diff % 60000) / 1000);
                 
-                if (days > 0) {
-                    iftarCountdown.textContent = `${days}д ${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+                if (hours > 0) {
+                    iftarCountdown.textContent = `${hours}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
                 } else {
-                    iftarCountdown.textContent = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+                    iftarCountdown.textContent = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
                 }
             }
             tick();
